@@ -1,7 +1,13 @@
-import Head from 'next/head'
+import Head from "next/head"
+import styled from "styled-components"
+
+const Header = styled.h1`
+  ${({ color }) => `
+    color: ${color};
+    `}
+`
 
 export default function Home() {
-
   return (
     <div>
       <Head>
@@ -11,11 +17,11 @@ export default function Home() {
       </Head>
 
       <main>
-       Search page
+        Search page
+        <Header color="green">Hi</Header>
       </main>
 
-      <footer>
-      </footer>
+      <footer></footer>
     </div>
   )
 }

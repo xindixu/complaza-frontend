@@ -1,3 +1,18 @@
+
+## Set up
+1. Make sure you have `node`, `npm`, `yarn` installed
+2. In the root directory, run `yarn install`
+
+## Library
+1. Next.js
+2. Styled component
+3. Ant design
+
+## Routes
+/ -> search page 
+/result?q= -> result page
+/log-in
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
