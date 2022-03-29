@@ -15,12 +15,11 @@ function App({ Component, pageProps }) {
       </Head>
       <Layout>
         <Navbar />
-        <Content className="site-layout" style={{ padding: "0 50px", marginTop: 64 }}>
-          <div className="site-layout-background" style={{ padding: 24, minHeight: 380 }}>
+        <Content style={{ padding: "0 50px", marginTop: 64, height: "100%" }}>
+          <div style={{ padding: 24, minHeight: 380 }}>
             <Component {...pageProps} />
           </div>
         </Content>
-        <Footer style={{ textAlign: "center" }}>Complaza</Footer>
       </Layout>
     </>
   )
