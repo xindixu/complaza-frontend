@@ -1,5 +1,5 @@
-import Head from "next/head"
 import styled from "styled-components"
+import { Button } from 'antd';
 
 const Header = styled.h1`
   ${({ color }) => `
@@ -10,18 +10,13 @@ const Header = styled.h1`
 export default function Home() {
   return (
     <div>
-      <Head>
-        <title>Complaza</title>
-        <meta name="description" content="Compare products!" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+
 
       <main>
         Search page
         <Header color="green">Hi</Header>
+        <Button type="primary">Button</Button>
       </main>
-
-      <footer></footer>
     </div>
   )
 }
