@@ -1,5 +1,5 @@
 import React from "react"
-import PropTypes from "prop-types"
+import Link from "next/link"
 import { Layout, Menu } from "antd"
 import { UserSwitchOutlined } from "@ant-design/icons"
 import Image from "next/image"
@@ -27,7 +27,9 @@ const Navbar = () => {
         <Image src="/logo.png" alt="complaza logo" height="32" width="32" />
       </LogoWrapper>
       <Menu theme="dark" mode="horizontal" defaultSelectedKeys={["1"]} style={{ width: "100%" }}>
-        <Menu.Item>Search</Menu.Item>
+        <Menu.Item key={1}>
+          <Link href="/">Search</Link>
+        </Menu.Item>
         <UserWrapper>
           <UserSwitchOutlined />
         </UserWrapper>
