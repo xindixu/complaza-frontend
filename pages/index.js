@@ -38,6 +38,13 @@ export default function Home() {
 
   const onImageSearch = () => {
     console.log("Search by image...")
+
+    setIsSearching(true)
+
+    setTimeout(() => {
+      router.push(`/results?image=`)
+      setIsSearching(false)
+    }, 1000)
   }
 
   const content = (
@@ -60,7 +67,7 @@ export default function Home() {
 
       <UploaderWrapper>
         <Uploader onSearch={onImageSearch} />
-        {isImageSearchError && <Text type="danger">Please enter some text</Text>}
+        {isImageSearchError && <Text type="danger">Please upload a picture</Text>}
       </UploaderWrapper>
     </div>
   )
