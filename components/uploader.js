@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import PropTypes from "prop-types"
 import { Upload, message } from "antd"
 import { InboxOutlined } from "@ant-design/icons"
@@ -9,21 +9,17 @@ const Uploader = ({ onSearch }) => {
   const config = {
     name: "file",
     multiple: false,
-    // action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
+    accept: "image/*",
+    listType: "picture-card",
+    beforeUpload: () => false, // disable auto upload
   }
 
   const onChange = (info) => {
-    const { status } = info.file
-    if (status !== "uploading") {
-      console.log(info.file, info.fileList)
-    }
-    if (status === "done") {
-      message.success(`${info.file.name} file uploaded successfully.`)
+    console.log(info)
 
-      onSearch()
-    } else if (status === "error") {
-      message.error(`${info.file.name} file upload failed.`)
-    }
+    const originalFile = info.fileList[0].originFileObj
+
+    onSearch(originalFile)
   }
 
   const onDrop = (e) => {
