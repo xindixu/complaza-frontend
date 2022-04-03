@@ -11,7 +11,7 @@ const UploaderWrapper = styled.div`
   margin-top: 24px;
 `
 
-export default function Home() {
+function Home() {
   const [textQuery, setTextQuery] = useState("")
   const [isSearching, setIsSearching] = useState(false)
   const [isTextSearchError, setIsTextSearchError] = useState(false)
@@ -25,7 +25,7 @@ export default function Home() {
 
     setIsTextSearchError(false)
 
-    if (textQuery == "") {
+    if (textQuery === "") {
       setIsTextSearchError(true)
       return
     }
@@ -85,3 +85,5 @@ export default function Home() {
 
   return <main>{isSearching ? <Spin tip="Searching...">{content}</Spin> : content}</main>
 }
+
+export default Home

@@ -1,9 +1,8 @@
 import React, { useState } from "react"
 import PropTypes from "prop-types"
 import styled from "styled-components"
-import Card from "./card"
-
 import { Row, Col, Button } from "antd"
+import Card from "./card"
 
 const DATA = [
   { id: "1", name: "Kitty 1", imageUrl: "https://loremflickr.com/200/200", price: "50.4" },
@@ -31,7 +30,7 @@ const DATA = [
 const Wrapper = styled.div`
   overflow: hidden;
 `
-const ExpandableRow = ({ retailerName }) => {
+function ExpandableRow({ retailerName }) {
   const [isExpanded, setIsExpanded] = useState(false)
 
   return (
@@ -53,6 +52,8 @@ const ExpandableRow = ({ retailerName }) => {
   )
 }
 
-ExpandableRow.propTypes = {}
+ExpandableRow.propTypes = {
+  retailerName: PropTypes.string.isRequired,
+}
 
 export default ExpandableRow

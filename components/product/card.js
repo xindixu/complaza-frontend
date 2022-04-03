@@ -5,7 +5,7 @@ import { Card, Button, Row, Col } from "antd"
 import { StarOutlined } from "@ant-design/icons"
 
 const { Meta } = Card
-const ProductCard = ({ name, price, imageUrl, retailerName }) => {
+function ProductCard({ name, price, imageUrl, retailerName }) {
   return (
     <Card
       style={{ width: 240, marginBottom: "24px" }}
@@ -33,6 +33,11 @@ const ProductCard = ({ name, price, imageUrl, retailerName }) => {
   )
 }
 
-ProductCard.propTypes = {}
+ProductCard.propTypes = {
+  name: PropTypes.string.isRequired,
+  price: PropTypes.number.isRequired,
+  imageUrl: PropTypes.string.isRequired,
+  retailerName: PropTypes.string.isRequired,
+}
 
 export default ProductCard

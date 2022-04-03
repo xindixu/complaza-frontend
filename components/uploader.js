@@ -1,11 +1,11 @@
-import React, { useState } from "react"
+import React from "react"
 import PropTypes from "prop-types"
-import { Upload, message } from "antd"
+import { Upload } from "antd"
 import { InboxOutlined } from "@ant-design/icons"
 
 const { Dragger } = Upload
 
-const Uploader = ({ onSearch }) => {
+function Uploader({ onSearch }) {
   const config = {
     name: "file",
     multiple: false,

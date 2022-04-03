@@ -18,7 +18,7 @@ const UserWrapper = styled(Menu.Item)`
   margin-left: auto;
 `
 
-const Navbar = () => {
+function Navbar() {
   return (
     <Header
       style={{ position: "fixed", zIndex: 1, width: "100%", display: "flex", alignItems: "center" }}
@@ -37,7 +37,5 @@ const Navbar = () => {
     </Header>
   )
 }
-
-Navbar.propTypes = {}
 
 export default Navbar

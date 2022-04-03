@@ -9,7 +9,7 @@ const DATA = [
   { name: "Shopee.com" },
 ]
 
-const Result = () => {
+function Result() {
   return (
     <div>
       <Row wrap={false}>
@@ -23,7 +23,5 @@ const Result = () => {
     </div>
   )
 }
-
-Result.propTypes = {}
 
 export default Result
