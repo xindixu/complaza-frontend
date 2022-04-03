@@ -1,6 +1,5 @@
 import React from "react"
-import PropTypes from "prop-types"
-import { Row, Col, Divider } from "antd"
+import { Row, Col } from "antd"
 import ExpandableRow from "../components/product/expandable-row"
 
 const DATA = [
@@ -9,7 +8,8 @@ const DATA = [
   { name: "Alibaba.com" },
   { name: "Shopee.com" },
 ]
-const Result = (props) => {
+
+const Result = () => {
   return (
     <div>
       <Row wrap={false}>
