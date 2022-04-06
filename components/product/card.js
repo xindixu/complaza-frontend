@@ -9,7 +9,7 @@ function ProductCard({ name, price, imageUrl, retailerName, starred }) {
   return (
     <Card
       style={{ width: 240 }}
-      className="mb-5"
+      className="tw-mb-5"
       cover={<Image alt={name} src={imageUrl} width={240} height={240} />}
     >
       <Meta
