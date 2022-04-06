@@ -15,7 +15,7 @@ Amplify.configure({ ...awsconfig, ssr: true })
 function App({ Component, pageProps }) {
   const [currentUser, setCurrentUser] = useState({})
   useEffect(() => {
-    setCurrentUser(getCurrentUser())
+    getCurrentUser().then((res) => setCurrentUser({ ...res, isLoggedIn: res.email !== "" }))
   }, [])
 
   return (
