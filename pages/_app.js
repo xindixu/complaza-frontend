@@ -1,10 +1,14 @@
 import Head from "next/head"
 import "../styles/globals.css"
 import { Layout, Menu } from "antd"
+import Amplify from "aws-amplify"
 import Navbar from "../components/navbar"
 
-const { Header, Content, Footer } = Layout
+import awsconfig from "../src/aws-exports"
 
+const { Content } = Layout
+
+Amplify.configure({ ...awsconfig, ssr: true })
 function App({ Component, pageProps }) {
   return (
     <>

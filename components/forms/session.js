@@ -13,9 +13,10 @@ const BUTTON_TEXT = {
   SIGNUP: "Sign up",
 }
 
-function NewSession({ type }) {
+function NewSession({ type, onSubmit }) {
   const onFinish = (values) => {
     console.log("Success:", values)
+    onSubmit(values)
   }
 
   const onFinishFailed = (errorInfo) => {
