@@ -1,8 +1,6 @@
 import React, { useState } from "react"
-import { Auth } from "aws-amplify"
-
-import { Button, notification } from "antd"
-import NewSession, { LOGIN } from "../components/forms/session"
+import { notification } from "antd"
+import NewSession, { LOGIN } from "../components/session/new"
 import { signIn } from "../lib/auth"
 
 const openNotification = (msg) => {
