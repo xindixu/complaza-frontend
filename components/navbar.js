@@ -31,7 +31,9 @@ function Navbar() {
           <Link href="/">Search</Link>
         </Menu.Item>
         <UserWrapper>
-          <UserSwitchOutlined />
+          <Link href="/login" passHref>
+            <UserSwitchOutlined />
+          </Link>
         </UserWrapper>
       </Menu>
     </Header>
