@@ -2,10 +2,10 @@ import React from "react"
 import PropTypes from "prop-types"
 import Image from "next/image"
 import { Card, Button, Row, Col } from "antd"
-import { StarOutlined } from "@ant-design/icons"
+import { StarOutlined, StarFilled } from "@ant-design/icons"
 
 const { Meta } = Card
-function ProductCard({ name, price, imageUrl, retailerName }) {
+function ProductCard({ name, price, imageUrl, retailerName, starred }) {
   return (
     <Card
       style={{ width: 240 }}
@@ -20,7 +20,11 @@ function ProductCard({ name, price, imageUrl, retailerName }) {
             <Row>
               <Col flex="auto">View in {retailerName}</Col>
               <Col>
-                <Button icon={<StarOutlined />} shape="circle" />
+                {starred ? (
+                  <Button icon={<StarFilled />} shape="circle" />
+                ) : (
+                  <Button icon={<StarOutlined />} shape="circle" />
+                )}
               </Col>
             </Row>
           </div>

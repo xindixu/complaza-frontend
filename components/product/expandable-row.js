@@ -6,33 +6,10 @@ import Card from "./card"
 
 const { Title } = Typography
 
-const DATA = [
-  { id: "1", name: "Kitty 1", imageUrl: "https://loremflickr.com/200/200", price: "50.4" },
-  { id: "2", name: "Kitty 2", imageUrl: "https://loremflickr.com/200/200", price: "20.4" },
-  { id: "3", name: "Kitty 3", imageUrl: "https://loremflickr.com/200/200", price: "54.2" },
-  { id: "4", name: "Kitty 4", imageUrl: "https://loremflickr.com/200/200", price: "50.6" },
-  { id: "5", name: "Kitty 5", imageUrl: "https://loremflickr.com/200/200", price: "35.09" },
-  { id: "6", name: "Kitty 1", imageUrl: "https://loremflickr.com/200/200", price: "50.4" },
-  { id: "7", name: "Kitty 2", imageUrl: "https://loremflickr.com/200/200", price: "20.4" },
-  { id: "8", name: "Kitty 3", imageUrl: "https://loremflickr.com/200/200", price: "54.2" },
-  { id: "9", name: "Kitty 4", imageUrl: "https://loremflickr.com/200/200", price: "50.6" },
-  { id: "10", name: "Kitty 5", imageUrl: "https://loremflickr.com/200/200", price: "35.09" },
-  { id: "11", name: "Kitty 1", imageUrl: "https://loremflickr.com/200/200", price: "50.4" },
-  { id: "12", name: "Kitty 2", imageUrl: "https://loremflickr.com/200/200", price: "20.4" },
-  { id: "13", name: "Kitty 3", imageUrl: "https://loremflickr.com/200/200", price: "54.2" },
-  { id: "14", name: "Kitty 4", imageUrl: "https://loremflickr.com/200/200", price: "50.6" },
-  { id: "15", name: "Kitty 5", imageUrl: "https://loremflickr.com/200/200", price: "35.09" },
-  { id: "16", name: "Kitty 1", imageUrl: "https://loremflickr.com/200/200", price: "50.4" },
-  { id: "17", name: "Kitty 2", imageUrl: "https://loremflickr.com/200/200", price: "20.4" },
-  { id: "18", name: "Kitty 3", imageUrl: "https://loremflickr.com/200/200", price: "54.2" },
-  { id: "19", name: "Kitty 4", imageUrl: "https://loremflickr.com/200/200", price: "50.6" },
-  { id: "20", name: "Kitty 5", imageUrl: "https://loremflickr.com/200/200", price: "35.09" },
-]
-
 const Wrapper = styled.div`
   overflow: hidden;
 `
-function ExpandableRow({ retailerName }) {
+function ExpandableRow({ retailerName, items }) {
   const [isExpanded, setIsExpanded] = useState(false)
 
   return (
@@ -40,9 +17,15 @@ function ExpandableRow({ retailerName }) {
       <Title level={3}>{retailerName}</Title>
 
       <Row gutter={16} wrap={isExpanded}>
-        {DATA.map(({ id, name, imageUrl, price }) => (
+        {items?.map(({ id, name, imageUrl, price, starred }) => (
           <Col key={id}>
-            <Card name={name} imageUrl={imageUrl} price={price} retailerName={retailerName} />
+            <Card
+              name={name}
+              imageUrl={imageUrl}
+              price={price}
+              retailerName={retailerName}
+              starred={starred}
+            />
           </Col>
         ))}
       </Row>
@@ -57,6 +40,14 @@ function ExpandableRow({ retailerName }) {
 
 ExpandableRow.propTypes = {
   retailerName: PropTypes.string.isRequired,
+  items: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      name: PropTypes.string.isRequired,
+      price: PropTypes.number.isRequired,
+      starred: PropTypes.bool.isRequired,
+    }).isRequired
+  ).isRequired,
 }
 
 export default ExpandableRow
