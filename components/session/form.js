@@ -106,4 +106,8 @@ SessionForm.propTypes = {
   initialValues: PropTypes.object,
 }
 
+SessionForm.defaultProps = {
+  initialValues: {},
+}
+
 export default SessionForm
