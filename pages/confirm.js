@@ -1,23 +1,10 @@
 import React, { useEffect, useState } from "react"
-import { notification, Spin } from "antd"
 import { useRouter } from "next/router"
-import NewSession, { CONFIRM } from "../components/session/new"
-import { confirmSignUp } from "../lib/auth"
+import Session from "../components/session"
+import { CONFIRM } from "../components/session/form"
 
-const openNotification = (msg) => {
-  notification.open({
-    message: "Confirm Sign Up Failed",
-    description: msg,
-    duration: 0,
-    onClick: () => {
-      console.log("Notification Clicked!")
-    },
-  })
-}
-
-function Confirm(props) {
+function Confirm() {
   const router = useRouter()
-  const [isSubmitting, setIsSubmitting] = useState(false)
   const [initialEmail, setInitialEmail] = useState("")
 
   useEffect(() => {
@@ -28,22 +15,8 @@ function Confirm(props) {
     }
   }, [router.query, router.query.email])
 
-  const onSubmit = async (values) => {
-    try {
-      setIsSubmitting(true)
-      const { user } = await confirmSignUp(values)
-      console.log(user)
-    } catch (err) {
-      openNotification(err.message)
-    } finally {
-      setIsSubmitting(false)
-    }
-  }
-
-  const content = (
-    <NewSession type={CONFIRM} onSubmit={onSubmit} initialValues={{ email: initialEmail }} />
-  )
-  return isSubmitting ? <Spin>{content}</Spin> : content
+  const onSuccess = () => router.push("/login")
+  return <Session type={CONFIRM} initialEmail={initialEmail} onSuccess={onSuccess} />
 }
 
 export default Confirm

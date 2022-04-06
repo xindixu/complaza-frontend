@@ -32,8 +32,8 @@ function SessionForm({ type, onSubmit, initialValues }) {
   return (
     <Form
       name="basic"
-      labelCol={{ span: 8 }}
-      wrapperCol={{ span: 8 }}
+      labelCol={{ span: 4 }}
+      wrapperCol={{ span: 16 }}
       initialValues={initialValues}
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
@@ -55,7 +55,7 @@ function SessionForm({ type, onSubmit, initialValues }) {
 
       <Form.Item
         wrapperCol={{
-          offset: 8,
+          offset: 4,
           span: 16,
         }}
       >
@@ -88,7 +88,7 @@ function SessionForm({ type, onSubmit, initialValues }) {
 
       <Form.Item
         wrapperCol={{
-          offset: 8,
+          offset: 4,
           span: 16,
         }}
       >
@@ -102,6 +102,8 @@ function SessionForm({ type, onSubmit, initialValues }) {
 
 SessionForm.propTypes = {
   type: PropTypes.oneOf([LOGIN, SIGNUP, CONFIRM]).isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  initialValues: PropTypes.object,
 }
 
 export default SessionForm

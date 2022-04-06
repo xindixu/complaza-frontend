@@ -1,30 +1,16 @@
-import React, { useState } from "react"
-import { notification } from "antd"
-import NewSession, { LOGIN } from "../components/session/new"
-import { signIn } from "../lib/auth"
+import React from "react"
+import { useRouter } from "next/router"
+import Session from "../components/session"
+import { LOGIN } from "../components/session/form"
 
-const openNotification = (msg) => {
-  notification.open({
-    message: "Log In Failed",
-    description: msg,
-    duration: 0,
-    onClick: () => {
-      console.log("Notification Clicked!")
-    },
-  })
-}
+function LogIn() {
+  const router = useRouter()
 
-function Login(props) {
-  const onSubmit = async (values) => {
-    try {
-      const { user } = await signIn(values)
-      console.log(user)
-    } catch (err) {
-      console.log(err.message)
-      openNotification(err.message)
-    }
+  const onSuccess = (user) => {
+    router.push("/")
   }
-  return <NewSession type={LOGIN} onSubmit={onSubmit} />
+
+  return <Session type={LOGIN} onSuccess={onSuccess} />
 }
 
-export default Login
+export default LogIn
