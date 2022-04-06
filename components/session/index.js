@@ -61,7 +61,6 @@ function Session({ type, initialEmail, onSuccess }) {
       setIsSubmitting(true)
       const { user } = await ACTIONS[type](values)
 
-      console.log(user)
       onSuccess(user)
     } catch (err) {
       openNotification(NOTIFICATIONS[type], err.message)

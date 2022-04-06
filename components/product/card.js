@@ -8,22 +8,19 @@ const { Meta } = Card
 function ProductCard({ name, price, imageUrl, retailerName }) {
   return (
     <Card
-      style={{ width: 240, marginBottom: "24px" }}
-      cover={
-        <div style={{ width: "100%" }}>
-          <Image alt={name} src={imageUrl} width={240} height={240} />
-        </div>
-      }
+      style={{ width: 240 }}
+      className="mb-5"
+      cover={<Image alt={name} src={imageUrl} width={240} height={240} />}
     >
       <Meta
-        title={price}
+        title={`$ ${price}`}
         description={
           <div>
             <strong>{name}</strong>
             <Row>
               <Col flex="auto">View in {retailerName}</Col>
               <Col>
-                <Button icon={<StarOutlined />} shape="circle" />{" "}
+                <Button icon={<StarOutlined />} shape="circle" />
               </Col>
             </Row>
           </div>

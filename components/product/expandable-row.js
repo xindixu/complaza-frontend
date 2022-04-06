@@ -1,8 +1,10 @@
 import React, { useState } from "react"
 import PropTypes from "prop-types"
 import styled from "styled-components"
-import { Row, Col, Button } from "antd"
+import { Row, Col, Button, Typography } from "antd"
 import Card from "./card"
+
+const { Title } = Typography
 
 const DATA = [
   { id: "1", name: "Kitty 1", imageUrl: "https://loremflickr.com/200/200", price: "50.4" },
@@ -35,7 +37,8 @@ function ExpandableRow({ retailerName }) {
 
   return (
     <Wrapper>
-      <h4>{retailerName}</h4>
+      <Title level={3}>{retailerName}</Title>
+
       <Row gutter={16} wrap={isExpanded}>
         {DATA.map(({ id, name, imageUrl, price }) => (
           <Col key={id}>
@@ -43,7 +46,7 @@ function ExpandableRow({ retailerName }) {
           </Col>
         ))}
       </Row>
-      <Row style={{ marginBottom: 16 }} align="middle" justify="end">
+      <Row align="middle" justify="end">
         <Button onClick={() => setIsExpanded((prev) => !prev)}>
           {isExpanded ? "Collapse" : "Expand"}
         </Button>
