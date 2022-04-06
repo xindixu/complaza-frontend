@@ -18,6 +18,8 @@ function App({ Component, pageProps }) {
     getCurrentUser().then((res) => setCurrentUser({ ...res, isLoggedIn: res.email !== "" }))
   }, [])
 
+  console.log(currentUser)
+
   return (
     <>
       <Head>
