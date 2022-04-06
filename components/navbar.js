@@ -52,7 +52,7 @@ function Navbar() {
           <Link href="/">Search</Link>
         </Menu.Item>
         <Menu.Item key={2}>
-          <Link href="/">History</Link>
+          <Link href="/wishlist">Wishlist</Link>
         </Menu.Item>
         <Dropdown overlay={menu} placement="bottomLeft">
           <UserWrapper key={3}>

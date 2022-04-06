@@ -10,15 +10,27 @@ import awsconfig from "../src/aws-exports"
 
 const { Content } = Layout
 
-Amplify.configure({ ...awsconfig, ssr: true })
+Amplify.configure({
+  ...awsconfig,
+  ssr: true,
+  API: {
+    endpoints: [
+      {
+        name: "default",
+        // TODO: consider moving it to env vars and/or auto grep from stack
+        endpoint: "https://03zljwt77a.execute-api.us-east-1.amazonaws.com/stage1",
+      },
+    ],
+  },
+})
 
 function App({ Component, pageProps }) {
   const [currentUser, setCurrentUser] = useState({})
   useEffect(() => {
-    getCurrentUser().then((res) => setCurrentUser({ ...res, isLoggedIn: res.email !== "" }))
+    getCurrentUser().then(setCurrentUser)
   }, [])
 
-  console.log(currentUser)
+  console.log("currentUser", currentUser)
 
   return (
     <>
