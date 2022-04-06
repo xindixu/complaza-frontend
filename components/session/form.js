@@ -16,7 +16,7 @@ const BUTTON_TEXT = {
   CONFIRM: "Confirm sign up",
 }
 
-function NewSession({ type, onSubmit, initialValues }) {
+function SessionForm({ type, onSubmit, initialValues }) {
   const [form] = Form.useForm()
   const onFinish = (values) => {
     console.log("Success:", values)
@@ -100,8 +100,8 @@ function NewSession({ type, onSubmit, initialValues }) {
   )
 }
 
-NewSession.propTypes = {
+SessionForm.propTypes = {
   type: PropTypes.oneOf([LOGIN, SIGNUP, CONFIRM]).isRequired,
 }
 
-export default NewSession
+export default SessionForm
