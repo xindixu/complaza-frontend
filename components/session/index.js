@@ -74,7 +74,7 @@ function Session({ type, initialEmail, onSuccess }) {
   )
   return (
     <>
-      <Row>
+      <Row className="tw-mb-4">
         <Col offset={4}>
           <Title level={2}>{PROMPTS[type].title}</Title>
           <Text>{PROMPTS[type].text}</Text>

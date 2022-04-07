@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react"
 import { API } from "aws-amplify"
 import { Row, Col, Typography } from "antd"
+import { useRouter } from "next/router"
 import AuthContext from "../context/auth"
 import Card from "../components/product/card"
 
@@ -8,7 +9,14 @@ const { Title } = Typography
 
 function Wishlist(props) {
   const [items, setItems] = useState([])
-  const { userId, token } = useContext(AuthContext)
+  const { userId, token, isLoggedIn } = useContext(AuthContext)
+  const router = useRouter()
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      router.push("/login?hint=true")
+    }
+  }, [isLoggedIn, router])
 
   useEffect(() => {
     if (!userId || !token) {
