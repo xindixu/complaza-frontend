@@ -30,8 +30,6 @@ function App({ Component, pageProps }) {
     getCurrentUser().then(setCurrentUser)
   }, [])
 
-  console.log("currentUser", currentUser)
-
   return (
     <>
       <Head>

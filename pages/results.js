@@ -12,7 +12,11 @@ function Result() {
   const { q } = router.query
 
   useEffect(() => {
-    API.get("default", "/search", { q }).then((res) => {
+    if (!q) {
+      return
+    }
+
+    API.get("default", `/search?q=${q}&sort_by=price`).then((res) => {
       if (res.statusCode !== 200) {
         console.log("error")
         return
