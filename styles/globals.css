@@ -1,7 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import "~antd/dist/antd.css";
+
+@layer components {
+  button, [type='button'], [type='reset'], [type='submit'] {
+      background-color: none;
+  }
+}
+
 
 html,
 body {
@@ -18,9 +24,4 @@ a {
 
 * {
   box-sizing: border-box;
-}
-
-.ant-layout {
-  height: 100%;
-  background: none;
 }

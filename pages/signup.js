@@ -7,7 +7,8 @@ function SignUp() {
   const router = useRouter()
 
   const onSuccess = (user) => {
-    router.push(`/confirm?email=${user.email}`)
+    // use username as email
+    router.push(`/confirm?email=${user.username}`)
   }
   return <Session type={SIGNUP} onSuccess={onSuccess} />
 }

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import Head from "next/head"
 import "../styles/globals.css"
+import "../styles/main.css"
 import { Layout } from "antd"
 import Amplify from "aws-amplify"
 import Navbar from "../components/navbar"

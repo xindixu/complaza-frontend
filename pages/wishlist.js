@@ -7,7 +7,7 @@ import Card from "../components/product/card"
 
 const { Title } = Typography
 
-function Wishlist(props) {
+function Wishlist() {
   const [items, setItems] = useState([])
   const { userId, token, isLoggedIn } = useContext(AuthContext)
   const router = useRouter()
