@@ -18,7 +18,7 @@ function ExpandableRow({ retailerName, items }) {
 
       <Row gutter={16} wrap={isExpanded}>
         {items?.map(({ id, name, imageUrl, price, starred }) => (
-          <Col key={id}>
+          <Col key={id} className="tw-mb-5">
             <Card
               name={name}
               imageUrl={imageUrl}
