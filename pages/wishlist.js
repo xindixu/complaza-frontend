@@ -48,7 +48,7 @@ function Wishlist() {
     }
 
     API.post("default", `/wishlist/${userId}`, {
-      body: { item: { name: item.name, image: item.image, price: item.price } },
+      body: { item: { name: item.name, image: item.image, price: item.price, item: item.link } },
       headers: {
         Authorization: token,
       },

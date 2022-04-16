@@ -24,9 +24,8 @@ function Result() {
         return
       }
 
-      const { items, retailers } = res.body
-      setRetailers(retailers)
-      setItemsByRetailer(items)
+      setRetailers(res.body.retailers)
+      setItemsByRetailer(res.body.items)
     })
   }, [q])
 
@@ -42,7 +41,7 @@ function Result() {
     }
 
     API.post("default", `/wishlist/${userId}`, {
-      body: { item: { name: item.name, image: item.image, price: item.price } },
+      body: { item: { name: item.name, image: item.image, price: item.price, link: item.link } },
       headers: {
         Authorization: token,
       },
