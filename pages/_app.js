@@ -19,7 +19,7 @@ Amplify.configure({
       {
         name: "default",
         // TODO: consider moving it to env vars and/or auto grep from stack
-        endpoint: "https://03zljwt77a.execute-api.us-east-1.amazonaws.com/stage1",
+        endpoint: "https://v9ijm7vojg.execute-api.us-east-1.amazonaws.com/stage1",
       },
     ],
   },

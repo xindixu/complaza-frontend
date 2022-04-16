@@ -5,12 +5,17 @@ import { Card, Button, Row, Col } from "antd"
 import { StarOutlined, StarFilled } from "@ant-design/icons"
 
 const { Meta } = Card
-function ProductCard({ name, price, imageUrl, retailerName, starred }) {
+function ProductCard({
+  name,
+  price,
+  image,
+  retailerName,
+  starred,
+  addToWishlist,
+  removeFromWishlist,
+}) {
   return (
-    <Card
-      style={{ width: 240 }}
-      cover={<Image alt={name} src={imageUrl} width={240} height={240} />}
-    >
+    <Card style={{ width: 240 }} cover={<Image alt={name} src={image} width={240} height={240} />}>
       <Meta
         title={`$ ${price}`}
         description={
@@ -20,9 +25,9 @@ function ProductCard({ name, price, imageUrl, retailerName, starred }) {
               <Col flex="auto">View in {retailerName}</Col>
               <Col>
                 {starred ? (
-                  <Button icon={<StarFilled />} shape="circle" />
+                  <Button icon={<StarFilled />} shape="circle" onClick={removeFromWishlist} />
                 ) : (
-                  <Button icon={<StarOutlined />} shape="circle" />
+                  <Button icon={<StarOutlined />} shape="circle" onClick={addToWishlist} />
                 )}
               </Col>
             </Row>
@@ -36,8 +41,10 @@ function ProductCard({ name, price, imageUrl, retailerName, starred }) {
 ProductCard.propTypes = {
   name: PropTypes.string.isRequired,
   price: PropTypes.number.isRequired,
-  imageUrl: PropTypes.string.isRequired,
+  image: PropTypes.string.isRequired,
   retailerName: PropTypes.string.isRequired,
+  addToWishlist: PropTypes.func.isRequired,
+  removeFromWishlist: PropTypes.func.isRequired,
 }
 
 export default ProductCard

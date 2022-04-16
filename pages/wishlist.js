@@ -41,9 +41,9 @@ function Wishlist() {
       <Title>Wishlist</Title>
 
       <Row gutter={16}>
-        {items?.map(({ id, name, imageUrl, price, dateAdded }) => (
+        {items?.map(({ id, name, image, price, dateAdded }) => (
           <Col key={id} className="tw-mb-5">
-            <Card name={name} imageUrl={imageUrl} price={price} retailerName="Amazon" starred />
+            <Card name={name} image={image} price={price} retailerName="Amazon" starred />
           </Col>
         ))}
       </Row>

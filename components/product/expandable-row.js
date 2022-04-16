@@ -9,7 +9,7 @@ const { Title } = Typography
 const Wrapper = styled.div`
   overflow: hidden;
 `
-function ExpandableRow({ retailerName, items }) {
+function ExpandableRow({ retailerName, items, addToWishlist, removeFromWishlist }) {
   const [isExpanded, setIsExpanded] = useState(false)
 
   return (
@@ -17,17 +17,22 @@ function ExpandableRow({ retailerName, items }) {
       <Title level={3}>{retailerName}</Title>
 
       <Row gutter={16} wrap={isExpanded}>
-        {items?.map(({ id, name, imageUrl, price, starred }) => (
-          <Col key={id} className="tw-mb-5">
-            <Card
-              name={name}
-              imageUrl={imageUrl}
-              price={price}
-              retailerName={retailerName}
-              starred={starred}
-            />
-          </Col>
-        ))}
+        {items?.map((item) => {
+          const { id, name, image, price, starred } = item
+          return (
+            <Col key={id} className="tw-mb-5">
+              <Card
+                name={name}
+                image={image}
+                price={price}
+                retailerName={retailerName}
+                starred={starred}
+                addToWishlist={() => addToWishlist(item)}
+                removeFromWishlist={() => removeFromWishlist(item)}
+              />
+            </Col>
+          )
+        })}
       </Row>
       <Row align="middle" justify="end">
         <Button onClick={() => setIsExpanded((prev) => !prev)}>
@@ -48,6 +53,8 @@ ExpandableRow.propTypes = {
       starred: PropTypes.bool.isRequired,
     }).isRequired
   ).isRequired,
+  addToWishlist: PropTypes.func.isRequired,
+  removeFromWishlist: PropTypes.func.isRequired,
 }
 
 export default ExpandableRow
