@@ -28,6 +28,7 @@ Amplify.configure({
 function App({ Component, pageProps }) {
   const [currentUser, setCurrentUser] = useState({})
   useEffect(() => {
+    console.log("get current user")
     getCurrentUser().then(setCurrentUser)
   }, [])
 

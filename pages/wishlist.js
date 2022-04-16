@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react"
+import React, { useState, useEffect, useContext, useCallback } from "react"
 import { API } from "aws-amplify"
 import { Row, Col, Typography } from "antd"
 import { useRouter } from "next/router"
@@ -36,16 +36,51 @@ function Wishlist() {
     })
   }, [token, userId])
 
+  const addToWishlist = useCallback((item) => {
+    if (!token) {
+      // TODO: show please log in pop up
+      console.log("please log in")
+      return
+    }
+
+    if (!item) {
+      return
+    }
+
+    API.post("default", `/wishlist/${userId}`, {
+      body: { item: { name: item.name, image: item.image, price: item.price } },
+      headers: {
+        Authorization: token,
+      },
+    }).then((res) => {
+      if (res.statusCode !== 200) {
+        console.log("error")
+      }
+      console.log(res)
+    })
+  }, [])
+
   return (
     <div>
       <Title>Wishlist</Title>
 
       <Row gutter={16}>
-        {items?.map(({ id, name, image, price, dateAdded }) => (
-          <Col key={id} className="tw-mb-5">
-            <Card name={name} image={image} price={price} retailerName="Amazon" starred />
-          </Col>
-        ))}
+        {items?.map((item) => {
+          const { id, name, image, price, dateAdded } = item
+          return (
+            <Col key={id} className="tw-mb-5">
+              <Card
+                name={name}
+                image={image}
+                price={price}
+                retailerName="Amazon"
+                starred
+                addToWishlist={() => addToWishlist(item)}
+                removeFromWishlist={() => addToWishlist(item)}
+              />
+            </Col>
+          )
+        })}
       </Row>
     </div>
   )
