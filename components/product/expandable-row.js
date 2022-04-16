@@ -17,18 +17,19 @@ function ExpandableRow({ retailerName, items, addToWishlist, removeFromWishlist 
       <Title level={3}>{retailerName}</Title>
 
       <Row gutter={16} wrap={isExpanded}>
-        {items?.map((item) => {
-          const { id, name, image, price, starred } = item
+        {items?.map((item, index) => {
+          const { id, name, image, price, starred, link } = item
           return (
             <Col key={id} className="tw-mb-5">
               <Card
-                name={name}
                 image={image}
+                link={link}
+                name={name}
                 price={price}
                 retailerName={retailerName}
                 starred={starred}
-                addToWishlist={() => addToWishlist(item)}
-                removeFromWishlist={() => removeFromWishlist(item)}
+                addToWishlist={() => addToWishlist(item, index)}
+                removeFromWishlist={() => removeFromWishlist(item, index)}
               />
             </Col>
           )
@@ -48,6 +49,7 @@ ExpandableRow.propTypes = {
   items: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number.isRequired,
+      link: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
       price: PropTypes.number.isRequired,
       starred: PropTypes.bool.isRequired,

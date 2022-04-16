@@ -4,6 +4,7 @@ import { Row, Col } from "antd"
 import { API } from "aws-amplify"
 import ExpandableRow from "../components/product/expandable-row"
 import AuthContext from "../context/auth"
+import { deleteWishlist, postWishlist } from "../lib/wishlist"
 
 function Result() {
   const [itemsByRetailer, setItemsByRetailer] = useState({})
@@ -29,33 +30,70 @@ function Result() {
     })
   }, [q])
 
-  const addToWishlist = useCallback((item) => {
-    if (!token) {
-      // TODO: show please log in pop up
-      console.log("please log in")
-      return
-    }
-
-    if (!item) {
-      return
-    }
-
-    API.post("default", `/wishlist/${userId}`, {
-      body: { item: { name: item.name, image: item.image, price: item.price, link: item.link } },
-      headers: {
-        Authorization: token,
-      },
-    }).then((res) => {
-      if (res.statusCode !== 200) {
-        console.log("error")
+  const addToWishlist = useCallback(
+    (item, index) => {
+      if (!token) {
+        // TODO: show please log in pop up
+        console.log("please log in")
+        return
       }
-      console.log(res)
-    })
-  }, [])
 
-  const removeFromWishlist = useCallback((item) => {
-    console.log(item)
-  }, [])
+      if (!item) {
+        return
+      }
+
+      postWishlist({ userId, token, item }).then((res) => {
+        if (res.statusCode !== 200) {
+          console.log("error")
+          return
+        }
+        console.log(res)
+        const { retailer } = item
+        setItemsByRetailer((prevRetailers) => ({
+          ...prevRetailers,
+          [item.retailer]: [
+            ...prevRetailers[retailer].slice(0, index),
+            { ...item, starred: true },
+            ...prevRetailers[retailer].slice(index + 1),
+          ],
+        }))
+      })
+    },
+    [token, userId]
+  )
+
+  const removeFromWishlist = useCallback(
+    (item, index) => {
+      console.log(item)
+      if (!token) {
+        // TODO: show please log in pop up
+        console.log("please log in")
+        return
+      }
+
+      if (!item) {
+        return
+      }
+
+      deleteWishlist({ userId, token, item }).then((res) => {
+        if (res.statusCode !== 200) {
+          console.log("error")
+          return
+        }
+        console.log(res)
+        const { retailer } = item
+        setItemsByRetailer((prevRetailers) => ({
+          ...prevRetailers,
+          [item.retailer]: [
+            ...prevRetailers[retailer].slice(0, index),
+            { ...item, starred: false },
+            ...prevRetailers[retailer].slice(index + 1),
+          ],
+        }))
+      })
+    },
+    [token, userId]
+  )
 
   return (
     <div>
