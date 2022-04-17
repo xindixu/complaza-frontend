@@ -19,16 +19,20 @@ function Result() {
       return
     }
 
-    API.get("default", `/search?q=${q}&sort_by=price`).then((res) => {
+    const link = userId
+      ? `/search?q=${q}&sort_by=price&uid=${userId}`
+      : `/search?q=${q}&sort_by=price`
+
+    API.get("default", link).then((res) => {
       if (res.statusCode !== 200) {
-        console.log("error")
+        console.log("error", res)
         return
       }
 
       setRetailers(res.body.retailers)
       setItemsByRetailer(res.body.items)
     })
-  }, [q])
+  }, [q, userId])
 
   const addToWishlist = useCallback(
     (item, index) => {
@@ -80,7 +84,7 @@ function Result() {
           console.log("error")
           return
         }
-        console.log(res)
+
         const { retailer } = item
         setItemsByRetailer((prevRetailers) => ({
           ...prevRetailers,
