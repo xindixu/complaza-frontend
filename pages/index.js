@@ -30,11 +30,7 @@ function Home() {
       return
     }
 
-    setIsSearching(true)
-    setTimeout(() => {
-      router.push(`/results?q=${textQuery}`)
-      setIsSearching(false)
-    }, 1000)
+    router.push(`/results?q=${textQuery}`)
   }
 
   const onImageSearch = (file) => {

@@ -3,40 +3,44 @@ import PropTypes from "prop-types"
 import styled from "styled-components"
 import { Row, Col, Button, Typography } from "antd"
 import Card from "./card"
+import Loader from "./loader"
 
 const { Title } = Typography
 
 const Wrapper = styled.div`
   overflow: hidden;
 `
-function ExpandableRow({ retailerName, items, addToWishlist, removeFromWishlist }) {
+function ExpandableRow({ retailerName, items, addToWishlist, removeFromWishlist, isSearching }) {
   const [isExpanded, setIsExpanded] = useState(false)
 
   return (
     <Wrapper>
       <Title level={3}>{retailerName}</Title>
-
-      <Row gutter={16} wrap={isExpanded}>
-        {items?.map((item, index) => {
-          const { id, name, image, price, starred, link } = item
-          return (
-            <Col key={id} className="tw-mb-5">
-              <Card
-                image={image}
-                link={link}
-                name={name}
-                price={price}
-                retailerName={retailerName}
-                starred={starred}
-                addToWishlist={() => addToWishlist(item, index)}
-                removeFromWishlist={() => removeFromWishlist(item, index)}
-              />
-            </Col>
-          )
-        })}
-      </Row>
+      {isSearching ? (
+        <Loader />
+      ) : (
+        <Row gutter={16} wrap={isExpanded}>
+          {items?.map((item, index) => {
+            const { id, name, image, price, starred, link } = item
+            return (
+              <Col key={id} className="tw-mb-5">
+                <Card
+                  image={image}
+                  link={link}
+                  name={name}
+                  price={price}
+                  retailerName={retailerName}
+                  starred={starred}
+                  addToWishlist={() => addToWishlist(item, index)}
+                  removeFromWishlist={() => removeFromWishlist(item, index)}
+                />
+              </Col>
+            )
+          })}
+        </Row>
+      )}
       <Row align="middle" justify="end">
-        <Button onClick={() => setIsExpanded((prev) => !prev)}>
+        <Button onClick={() => setIsExpanded((prev) => !prev)} disabled={isSearching}>
           {isExpanded ? "Collapse" : "Expand"}
         </Button>
       </Row>

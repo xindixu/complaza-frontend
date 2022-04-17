@@ -6,15 +6,24 @@ import ExpandableRow from "../components/product/expandable-row"
 import AuthContext from "../context/auth"
 import { deleteWishlist, postWishlist } from "../lib/wishlist"
 
+const RETAILERS = [
+  { name: "Amazon", url: "https://amazon.com" },
+  { name: "Ebay", url: "https://ebay.com" },
+  { name: "Alibaba", url: "https://alibaba.com" },
+  { name: "Shopee", url: "https://shopee.com" },
+]
+
 function Result() {
   const [itemsByRetailer, setItemsByRetailer] = useState({})
-  const [retailers, setRetailers] = useState([])
+  const [isSearching, setIsSearching] = useState(true)
   const { userId, token } = useContext(AuthContext)
 
   const router = useRouter()
   const { q } = router.query
 
   useEffect(() => {
+    setIsSearching(true)
+
     if (!q) {
       return
     }
@@ -29,8 +38,8 @@ function Result() {
         return
       }
 
-      setRetailers(res.body.retailers)
       setItemsByRetailer(res.body.items)
+      setIsSearching(false)
     })
   }, [q, userId])
 
@@ -104,9 +113,10 @@ function Result() {
       <Row wrap={false}>
         <Col flex="200px">Result for &ldquo;{q}&rdquo;</Col>
         <Col flex="auto">
-          {retailers.map(({ name }) => (
+          {RETAILERS.map(({ name }) => (
             <ExpandableRow
               key={name}
+              isSearching={isSearching}
               retailerName={name}
               items={itemsByRetailer[name]}
               addToWishlist={addToWishlist}
