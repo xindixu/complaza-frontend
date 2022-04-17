@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext, useCallback } from "react"
 import { API } from "aws-amplify"
-import { Row, Col, Typography } from "antd"
+import { Row, Col, Typography, Empty } from "antd"
 import { useRouter } from "next/router"
 import AuthContext from "../context/auth"
 import Card from "../components/product/card"
@@ -10,14 +10,14 @@ const { Title } = Typography
 
 function Wishlist() {
   const [items, setItems] = useState([])
-  const { userId, token, isLoggedIn } = useContext(AuthContext)
+  const { userId, token, isLoggedIn, userLoaded } = useContext(AuthContext)
   const router = useRouter()
 
   useEffect(() => {
-    if (!isLoggedIn) {
+    if (!isLoggedIn && userLoaded) {
       router.push("/login?hint=true")
     }
-  }, [isLoggedIn, router])
+  }, [router, isLoggedIn, userLoaded])
 
   useEffect(() => {
     if (!userId || !token) {
@@ -37,69 +37,85 @@ function Wishlist() {
     })
   }, [token, userId])
 
-  const addToWishlist = useCallback((item) => {
-    if (!token) {
-      // TODO: show please log in pop up
-      console.log("please log in")
-      return
-    }
-
-    if (!item) {
-      return
-    }
-
-    postWishlist({ userId, token, item }).then((res) => {
-      if (res.statusCode !== 200) {
-        console.log("error")
-      }
-      console.log(res)
-    })
-  }, [])
-
-  const removeFromWishlist = useCallback((item, index) => {
-    if (!token) {
-      // TODO: show please log in pop up
-      console.log("please log in")
-      return
-    }
-
-    if (!item) {
-      return
-    }
-
-    deleteWishlist({ userId, token, item }).then((res) => {
-      if (res.statusCode !== 200) {
-        console.log("error")
+  const addToWishlist = useCallback(
+    (item) => {
+      if (!token) {
+        // TODO: show please log in pop up
+        console.log("please log in")
         return
       }
 
-      setItems((prevItems) => [...prevItems.slice(0, index), ...prevItems.slice(index + 1)])
-    })
-  }, [])
+      if (!item) {
+        return
+      }
+
+      postWishlist({ userId, token, item }).then((res) => {
+        if (res.statusCode !== 200) {
+          console.log("error")
+        }
+        console.log(res)
+      })
+    },
+    [token, userId]
+  )
+
+  const removeFromWishlist = useCallback(
+    (item, index) => {
+      if (!token) {
+        // TODO: show please log in pop up
+        console.log("please log in")
+        return
+      }
+
+      if (!item) {
+        return
+      }
+
+      deleteWishlist({ userId, token, item }).then((res) => {
+        if (res.statusCode !== 200) {
+          console.log("error")
+          return
+        }
+
+        setItems((prevItems) => [...prevItems.slice(0, index), ...prevItems.slice(index + 1)])
+      })
+    },
+    [token, userId]
+  )
 
   return (
     <div>
       <Title>Wishlist</Title>
-
-      <Row gutter={16}>
-        {items?.map((item, index) => {
-          const { id, link, name, image, price, retailer } = item
-          return (
-            <Col key={id} className="tw-mb-5">
-              <Card
-                name={name}
-                image={image}
-                price={price}
-                link={link}
-                retailerName={retailer}
-                starred
-                addToWishlist={() => addToWishlist(item, index)}
-                removeFromWishlist={() => removeFromWishlist(item, index)}
-              />
-            </Col>
-          )
-        })}
-      </Row>
+      {items.length ? (
+        <Row gutter={16}>
+          {items?.map((item, index) => {
+            const { id, link, name, image, price, retailer } = item
+            return (
+              <Col key={id} className="tw-mb-5">
+                <Card
+                  name={name}
+                  image={image}
+                  price={price}
+                  link={link}
+                  retailerName={retailer}
+                  starred
+                  addToWishlist={() => addToWishlist(item, index)}
+                  removeFromWishlist={() => removeFromWishlist(item, index)}
+                />
+              </Col>
+            )
+          })}
+        </Row>
+      ) : (
+        <Empty
+          description={
+            <span>
+              You haven&apos;t added anything to your wishlist. You can do so in the search results
+              page.
+            </span>
+          }
+        />
+      )}
     </div>
   )
 }
