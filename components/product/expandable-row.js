@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import PropTypes from "prop-types"
 import styled from "styled-components"
-import { Row, Col, Button, Typography } from "antd"
+import { Row, Col, Button, Typography, Empty } from "antd"
 import Card from "./card"
 import Loader from "./loader"
 
@@ -18,6 +18,8 @@ function ExpandableRow({ retailerName, items, addToWishlist, removeFromWishlist,
       <Title level={3}>{retailerName}</Title>
       {isSearching ? (
         <Loader />
+      ) : items.length === 0 ? (
+        <Empty />
       ) : (
         <Row gutter={16} wrap={isExpanded}>
           {items?.map((item, index) => {
