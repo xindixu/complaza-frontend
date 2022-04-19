@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback, useContext } from "react"
 import { useRouter } from "next/router"
-import { Row, Col, Image, Typography } from "antd"
+import { Row, Col, Image, Typography, message } from "antd"
 import { API, Storage } from "aws-amplify"
 import ExpandableRow from "../components/product/expandable-row"
 import AuthContext from "../context/auth"
@@ -60,8 +60,7 @@ function Result() {
   const addToWishlist = useCallback(
     (item, index) => {
       if (!token) {
-        // TODO: show please log in pop up
-        console.log("please log in")
+        message.error("Please log in")
         return
       }
 
@@ -74,7 +73,7 @@ function Result() {
           console.log("error")
           return
         }
-        console.log(res)
+
         const { retailer } = item
         setItemsByRetailer((prevRetailers) => ({
           ...prevRetailers,
@@ -84,6 +83,7 @@ function Result() {
             ...prevRetailers[retailer].slice(index + 1),
           ],
         }))
+        message.success("Added to your wishlist")
       })
     },
     [token, userId]
@@ -91,10 +91,8 @@ function Result() {
 
   const removeFromWishlist = useCallback(
     (item, index) => {
-      console.log(item)
       if (!token) {
-        // TODO: show please log in pop up
-        console.log("please log in")
+        message.error("Please log in")
         return
       }
 
@@ -117,6 +115,7 @@ function Result() {
             ...prevRetailers[retailer].slice(index + 1),
           ],
         }))
+        message.success("Removed from your wishlist")
       })
     },
     [token, userId]

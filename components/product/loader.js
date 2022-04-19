@@ -17,7 +17,7 @@ const Wrapper = styled.div`
 function ResultsLoader() {
   return (
     <Row gutter={16} wrap={false}>
-      {[...new Array(20).keys()].map((item, index) => {
+      {[...new Array(20).keys()].map((_, index) => {
         return (
           // eslint-disable-next-line react/no-array-index-key
           <Col key={index} className="tw-mb-5">
@@ -57,7 +57,5 @@ function ResultsLoader() {
     </Row>
   )
 }
-
-ResultsLoader.propTypes = {}
 
 export default ResultsLoader
