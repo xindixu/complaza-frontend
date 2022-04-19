@@ -36,14 +36,17 @@ function Home() {
 
     const key = uuidv4()
     try {
-      const uploadResult = await Storage.put(key, file, {
+      await Storage.put(key, file, {
         contentType: file.type,
       })
-      console.log("result", uploadResult)
-      return
-      const result = await API.post("default", `/image?key=${key}`)
 
-      const { title } = result
+      const res = await API.get("default", `/image/${key}`)
+
+      if (res.statusCode !== 200) {
+        return
+      }
+      const { title } = res.body
+
       router.push(`/results?image=${key}&q=${title}`)
       setIsSearching(false)
     } catch (error) {
