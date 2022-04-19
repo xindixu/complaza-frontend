@@ -42,7 +42,10 @@ function ExpandableRow({ retailerName, items, addToWishlist, removeFromWishlist,
         </Row>
       )}
       <Row align="middle" justify="end">
-        <Button onClick={() => setIsExpanded((prev) => !prev)} disabled={isSearching}>
+        <Button
+          onClick={() => setIsExpanded((prev) => !prev)}
+          disabled={isSearching || items.length === 0}
+        >
           {isExpanded ? "Collapse" : "Expand"}
         </Button>
       </Row>
