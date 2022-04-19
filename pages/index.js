@@ -15,7 +15,7 @@ const UploaderWrapper = styled.div`
   margin-top: 24px;
 `
 
-const MAX_SIZE = 200
+const MAX_SIZE = 512
 
 const resizeImage = (file) => {
   return new Promise((resolve) => {

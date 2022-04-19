@@ -1,10 +1,9 @@
-import React from "react"
-import PropTypes from "prop-types"
+import React, { useEffect, useState } from "react"
 import { useRouter } from "next/router"
-import { Row, Col, Typography, Empty, message } from "antd"
+import { Typography } from "antd"
+import { API } from "aws-amplify"
+import Detail from "../../components/product/detail"
 import PriceHistory from "../../components/price-history"
-
-const { Title } = Typography
 
 const PRICES = {
   "2022-04-13": 1.23,
@@ -19,12 +18,46 @@ const PRICES = {
 function ProductDetails(props) {
   const router = useRouter()
   const { id } = router.query
+  const [isLoading, setIsLoading] = useState(true)
+  const [product, setProduct] = useState(null)
+  const [priceHistory, setPriceHistory] = useState(null)
 
+  useEffect(() => {
+    setIsLoading(true)
+    API.get("default", `/product/${id}`).then((res) => {
+      const { statusCode, body } = res
+
+      if (statusCode !== 200) {
+        return
+      }
+
+      if (!body) {
+        return
+      }
+
+      setProduct(body.product)
+      setPriceHistory(body.price_history)
+      setIsLoading(false)
+    })
+  }, [id])
+
+  if (isLoading || !product || !priceHistory) {
+    return "loading"
+  }
+
+  const { image, link, name, price, retailer } = product
   return (
-    <div>
-      <Title>Product: {id}</Title>
+    <>
+      <Detail
+        image={image}
+        link={link}
+        name={name}
+        price={price}
+        retailer={retailer}
+        priceHistory={PRICES}
+      />
       <PriceHistory prices={PRICES} />
-    </div>
+    </>
   )
 }
 
