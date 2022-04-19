@@ -8,6 +8,7 @@
 2. Amplify
    1. Auth
    2. Hosting
+   3. Storage (S3)
 3. Styled component
 4. Ant design
 
