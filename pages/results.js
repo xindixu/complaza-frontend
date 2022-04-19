@@ -37,7 +37,7 @@ function Result() {
 
     API.get("default", link).then((res) => {
       if (res.statusCode !== 200) {
-        console.log("error", res)
+        console.error("error", res)
         return
       }
 
@@ -67,7 +67,7 @@ function Result() {
 
       postWishlist({ userId, token, item }).then((res) => {
         if (res.statusCode !== 200) {
-          console.log("error")
+          console.error("error")
           return
         }
 
@@ -99,7 +99,7 @@ function Result() {
 
       deleteWishlist({ userId, token, item }).then((res) => {
         if (res.statusCode !== 200) {
-          console.log("error")
+          console.error("error")
           return
         }
 

@@ -21,20 +21,13 @@ function Uploader({ onSearch }) {
     onSearch(originalFile)
   }
 
-  const onDrop = (e) => {
-    console.log("Dropped files", e.dataTransfer.files)
-  }
-
   return (
-    <Dragger {...config} onChange={onChange} onDrop={onDrop}>
+    <Dragger {...config} onChange={onChange}>
       <p className="ant-upload-drag-icon">
         <InboxOutlined />
       </p>
       <p className="ant-upload-text">Click or drag file to this area to upload</p>
-      <p className="ant-upload-hint">
-        Support for a single or bulk upload. Strictly prohibit from uploading company data or other
-        band files
-      </p>
+      <p className="ant-upload-hint">Upload one image with .jpeg or .jpg format</p>
     </Dragger>
   )
 }

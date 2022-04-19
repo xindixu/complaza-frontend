@@ -2,10 +2,8 @@ import { useState } from "react"
 import { useRouter } from "next/router"
 import styled from "styled-components"
 import { Row, Col, Button, Input, Spin, Typography } from "antd"
-
 import { API, Storage } from "aws-amplify"
 import { v4 as uuidv4 } from "uuid"
-
 import Uploader from "../components/uploader"
 import ImageTools from "../lib/image-resizer"
 

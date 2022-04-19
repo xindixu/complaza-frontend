@@ -33,7 +33,7 @@ function Wishlist() {
       },
     }).then((res) => {
       if (res.statusCode !== 200) {
-        console.log("error")
+        console.error("error")
       }
 
       setItems(res.body.items)
@@ -55,7 +55,7 @@ function Wishlist() {
 
       postWishlist({ userId, token, item }).then((res) => {
         if (res.statusCode !== 200) {
-          console.log("error")
+          console.error("error")
         }
         console.log(res)
       })
@@ -77,7 +77,7 @@ function Wishlist() {
 
       deleteWishlist({ userId, token, item }).then((res) => {
         if (res.statusCode !== 200) {
-          console.log("error")
+          console.error("error")
           return
         }
 

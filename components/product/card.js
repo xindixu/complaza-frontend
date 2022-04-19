@@ -1,6 +1,5 @@
 import React from "react"
 import PropTypes from "prop-types"
-import Image from "next/image"
 import { Card, Button, Row, Col, Typography } from "antd"
 import { StarOutlined, StarFilled } from "@ant-design/icons"
 
