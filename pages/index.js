@@ -2,15 +2,39 @@ import { useState } from "react"
 import { useRouter } from "next/router"
 import styled from "styled-components"
 import { Row, Col, Button, Input, Spin, Typography } from "antd"
+
 import { API, Storage } from "aws-amplify"
 import { v4 as uuidv4 } from "uuid"
+
 import Uploader from "../components/uploader"
+import ImageTools from "../lib/image-resizer"
 
 const { Text } = Typography
 
 const UploaderWrapper = styled.div`
   margin-top: 24px;
 `
+
+const MAX_SIZE = 200
+
+const resizeImage = (file) => {
+  return new Promise((resolve) => {
+    ImageTools.resize(
+      file,
+      {
+        width: MAX_SIZE,
+        height: MAX_SIZE,
+      },
+      async (blob) => {
+        const compressed = new File([blob], "temp", {
+          type: file.type,
+          lastModified: Date.now(),
+        })
+        resolve(compressed)
+      }
+    )
+  })
+}
 
 function Home() {
   const [textQuery, setTextQuery] = useState("")
@@ -33,24 +57,28 @@ function Home() {
 
   const onImageSearch = async (file) => {
     setIsSearching(true)
-
+    const { type } = file
     const key = uuidv4()
+
     try {
-      await Storage.put(key, file, {
-        contentType: file.type,
+      const resizedImage = await resizeImage(file)
+
+      await Storage.put(key, resizedImage, {
+        contentType: type,
       })
 
       const res = await API.get("default", `/image/${key}`)
 
       if (res.statusCode !== 200) {
-        return
+        throw res
       }
-      const { title } = res.body
 
+      const { title } = res.body
       router.push(`/results?image=${key}&q=${title}`)
       setIsSearching(false)
     } catch (error) {
       console.error(error)
+      setIsSearching(false)
     }
   }
 
@@ -72,7 +100,6 @@ function Home() {
           </Button>
         </Col>
       </Row>
-
       <UploaderWrapper>
         <Uploader onSearch={onImageSearch} />
         {isImageSearchError && <Text type="danger">Please upload a picture</Text>}
