@@ -1,10 +1,12 @@
 import React, { useEffect, useState, useCallback, useContext } from "react"
 import { useRouter } from "next/router"
-import { Row, Col, Image } from "antd"
+import { Row, Col, Image, Typography } from "antd"
 import { API, Storage } from "aws-amplify"
 import ExpandableRow from "../components/product/expandable-row"
 import AuthContext from "../context/auth"
 import { deleteWishlist, postWishlist } from "../lib/wishlist"
+
+const { Title } = Typography
 
 const RETAILERS = [
   { name: "Amazon", url: "https://amazon.com" },
@@ -48,7 +50,7 @@ function Result() {
     if (!image || !bucket) {
       return
     }
-    console.log(image, bucket)
+
     Storage.get(image, {
       bucket,
       region: "us-east-1",
@@ -122,18 +124,14 @@ function Result() {
 
   return (
     <div>
-      <Row wrap={false} gutter={16}>
-        <Col flex="200px">
+      <Row wrap={false} gutter={32}>
+        <Col flex="300px">
+          <Title level={3}>Results for...</Title>
           <p>
-            Keyword: <strong>&ldquo;{q}&rdquo;</strong>
+            <strong>&ldquo;{q}&rdquo;</strong>
           </p>
 
-          {imageLink && (
-            <>
-              <p>Image:</p>
-              <Image src={imageLink} alt="image uploaded for search" />
-            </>
-          )}
+          {imageLink && <Image src={imageLink} alt="image uploaded for search" />}
         </Col>
         <Col flex="auto">
           {RETAILERS.map(({ name }) => (

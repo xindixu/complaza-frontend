@@ -16,8 +16,6 @@ function Uploader({ onSearch }) {
   }
 
   const onChange = (info) => {
-    console.log(info)
-
     const originalFile = info.fileList[0].originFileObj
 
     onSearch(originalFile)
