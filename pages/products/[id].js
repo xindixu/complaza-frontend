@@ -1,21 +1,10 @@
 import React, { useEffect, useState } from "react"
 import { useRouter } from "next/router"
-import { Typography } from "antd"
 import { API } from "aws-amplify"
 import Detail from "../../components/product/detail"
 import PriceHistory from "../../components/price-history"
 
-const PRICES = {
-  "2022-04-13": 1.23,
-  "2022-04-14": 0.23,
-  "2022-04-15": 3.23,
-  "2022-04-16": 2.23,
-  "2022-04-17": 1.32,
-  "2022-04-18": 2.12,
-  "2022-04-19": 1.23,
-}
-
-function ProductDetails(props) {
+function ProductDetails() {
   const router = useRouter()
   const { id } = router.query
   const [isLoading, setIsLoading] = useState(true)
@@ -48,19 +37,10 @@ function ProductDetails(props) {
   const { image, link, name, price, retailer } = product
   return (
     <>
-      <Detail
-        image={image}
-        link={link}
-        name={name}
-        price={price}
-        retailer={retailer}
-        priceHistory={PRICES}
-      />
-      <PriceHistory prices={PRICES} />
+      <Detail image={image} link={link} name={name} price={price} retailer={retailer} />
+      <PriceHistory prices={priceHistory} />
     </>
   )
 }
-
-ProductDetails.propTypes = {}
 
 export default ProductDetails

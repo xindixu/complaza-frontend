@@ -4,7 +4,7 @@ import { Col, Image, Row, Typography } from "antd"
 
 const { Text, Title, Link } = Typography
 
-function Detail({ image, link, name, price, retailer, priceHistory }) {
+function Detail({ image, link, name, price, retailer }) {
   return (
     <Row>
       <Col span={12}>
@@ -25,6 +25,12 @@ function Detail({ image, link, name, price, retailer, priceHistory }) {
   )
 }
 
-Detail.propTypes = {}
+Detail.propTypes = {
+  image: PropTypes.string.isRequired,
+  link: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  price: PropTypes.number.isRequired,
+  retailer: PropTypes.string.isRequired,
+}
 
 export default Detail
