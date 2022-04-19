@@ -2,7 +2,8 @@ import { useState } from "react"
 import { useRouter } from "next/router"
 import styled from "styled-components"
 import { Row, Col, Button, Input, Spin, Typography } from "antd"
-import { API } from "aws-amplify"
+import { API, Storage } from "aws-amplify"
+import { v4 as uuidv4 } from "uuid"
 import Uploader from "../components/uploader"
 
 const { Text } = Typography
@@ -30,26 +31,24 @@ function Home() {
     router.push(`/results?q=${textQuery}`)
   }
 
-  const onImageSearch = (file) => {
+  const onImageSearch = async (file) => {
     setIsSearching(true)
 
-    const reader = new FileReader()
-    reader.onloadend = () => {
-      const body = reader.result.split(",")[1]
-      const { type } = file
-
-      API.post("default", "/image", {
-        // FIXME: Currently only support jpg and jpeg
-        headers: { "Content-Type": type },
-        body,
-      }).then((res) => {
-        // TODO: wait until backend returns keywords
-        const { key, bucket, title } = res
-        router.push(`/results?image=${key}&bucket=${bucket}&q=${title}`)
-        setIsSearching(false)
+    const key = uuidv4()
+    try {
+      const uploadResult = await Storage.put(key, file, {
+        contentType: file.type,
       })
+      console.log("result", uploadResult)
+      return
+      const result = await API.post("default", `/image?key=${key}`)
+
+      const { title } = result
+      router.push(`/results?image=${key}&q=${title}`)
+      setIsSearching(false)
+    } catch (error) {
+      console.error(error)
     }
-    reader.readAsDataURL(file)
   }
 
   const content = (

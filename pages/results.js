@@ -22,7 +22,7 @@ function Result() {
   const { userId, token } = useContext(AuthContext)
 
   const router = useRouter()
-  const { q, image, bucket } = router.query
+  const { q, image } = router.query
 
   useEffect(() => {
     setIsSearching(true)
@@ -47,15 +47,12 @@ function Result() {
   }, [q, userId])
 
   useEffect(() => {
-    if (!image || !bucket) {
+    if (!image) {
       return
     }
 
-    Storage.get(image, {
-      bucket,
-      region: "us-east-1",
-    }).then(setImageLink)
-  }, [bucket, image])
+    Storage.get(image).then(setImageLink)
+  }, [image])
 
   const addToWishlist = useCallback(
     (item, index) => {
