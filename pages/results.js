@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback, useContext } from "react"
 import { useRouter } from "next/router"
-import { Row, Col } from "antd"
-import { API } from "aws-amplify"
+import { Row, Col, Image } from "antd"
+import { API, Storage } from "aws-amplify"
 import ExpandableRow from "../components/product/expandable-row"
 import AuthContext from "../context/auth"
 import { deleteWishlist, postWishlist } from "../lib/wishlist"
@@ -16,10 +16,11 @@ const RETAILERS = [
 function Result() {
   const [itemsByRetailer, setItemsByRetailer] = useState({})
   const [isSearching, setIsSearching] = useState(true)
+  const [imageLink, setImageLink] = useState("")
   const { userId, token } = useContext(AuthContext)
 
   const router = useRouter()
-  const { q } = router.query
+  const { q, image, bucket } = router.query
 
   useEffect(() => {
     setIsSearching(true)
@@ -42,6 +43,17 @@ function Result() {
       setIsSearching(false)
     })
   }, [q, userId])
+
+  useEffect(() => {
+    if (!image || !bucket) {
+      return
+    }
+    console.log(image, bucket)
+    Storage.get(image, {
+      bucket,
+      region: "us-east-1",
+    }).then(setImageLink)
+  }, [bucket, image])
 
   const addToWishlist = useCallback(
     (item, index) => {
@@ -110,8 +122,19 @@ function Result() {
 
   return (
     <div>
-      <Row wrap={false}>
-        <Col flex="200px">Result for &ldquo;{q}&rdquo;</Col>
+      <Row wrap={false} gutter={16}>
+        <Col flex="200px">
+          <p>
+            Keyword: <strong>&ldquo;{q}&rdquo;</strong>
+          </p>
+
+          {imageLink && (
+            <>
+              <p>Image:</p>
+              <Image src={imageLink} alt="image uploaded for search" />
+            </>
+          )}
+        </Col>
         <Col flex="auto">
           {RETAILERS.map(({ name }) => (
             <ExpandableRow

@@ -21,9 +21,6 @@ function Home() {
   const router = useRouter()
 
   const onTextSearch = () => {
-    console.log("Search by text...")
-    console.log(textQuery)
-
     setIsTextSearchError(false)
 
     if (textQuery === "") {
@@ -35,8 +32,6 @@ function Home() {
   }
 
   const onImageSearch = (file) => {
-    console.log("Search by image...")
-
     setIsSearching(true)
 
     const reader = new FileReader()
@@ -50,8 +45,8 @@ function Home() {
         body,
       }).then((res) => {
         // TODO: wait until backend returns keywords
-        const { key, title } = res
-        router.push(`/results?image=${key}&q=${title}`)
+        const { key, bucket, title } = res
+        router.push(`/results?image=${key}&bucket=${bucket}&q=${title}`)
         setIsSearching(false)
       })
     }
