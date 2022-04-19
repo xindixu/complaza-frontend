@@ -88,6 +88,10 @@ function Wishlist() {
     [token, userId]
   )
 
+  const onClickProduct = (id) => {
+    router.push(`/products/${id}`)
+  }
+
   return (
     <div>
       <Title>Wishlist</Title>
@@ -100,6 +104,7 @@ function Wishlist() {
             return (
               <Col key={id} className="tw-mb-5">
                 <Card
+                  onClick={() => onClickProduct(item.id)}
                   name={name}
                   image={image}
                   price={price}

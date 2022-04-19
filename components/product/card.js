@@ -15,9 +15,15 @@ function ProductCard({
   removeFromWishlist,
   retailerName,
   starred,
+  onClick,
 }) {
   return (
-    <Card style={{ width: 240 }} cover={<Image alt={name} src={image} width={240} height={240} />}>
+    <Card
+      style={{ width: 240 }}
+      hoverable
+      cover={<Image alt={name} src={image} width={240} height={240} />}
+      onClick={onClick}
+    >
       <Meta
         title={`$ ${price}`}
         description={
@@ -52,6 +58,11 @@ ProductCard.propTypes = {
   removeFromWishlist: PropTypes.func.isRequired,
   addToWishlist: PropTypes.func.isRequired,
   retailerName: PropTypes.string.isRequired,
+  onClick: PropTypes.func,
+}
+
+ProductCard.defaultProps = {
+  onClick: () => {},
 }
 
 export default ProductCard
