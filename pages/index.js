@@ -89,6 +89,7 @@ function Home() {
             placeholder="Search by text"
             value={textQuery}
             onChange={(e) => setTextQuery(e.target.value)}
+            onPressEnter={onTextSearch}
           />
           {isTextSearchError && <Text type="danger">Please enter some text</Text>}
         </Col>
