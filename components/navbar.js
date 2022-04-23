@@ -31,16 +31,12 @@ function Navbar() {
 
   const menu = (
     <Menu selectable>
-      <Menu.Item key={1}>
-        <Link href="/profile">Profile</Link>
-      </Menu.Item>
-      <Menu.Divider />
       {isLoggedIn ? (
-        <Menu.Item key={2} danger>
+        <Menu.Item key={1} danger>
           <Link href="/logout">Logout</Link>
         </Menu.Item>
       ) : (
-        <Menu.Item key={3}>
+        <Menu.Item key={2}>
           <Link href="/login">Login</Link>
         </Menu.Item>
       )}
