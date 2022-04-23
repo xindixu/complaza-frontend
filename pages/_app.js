@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, useMemo } from "react"
+import { useRouter } from "next/router"
+import { message, Layout } from "antd"
 import Head from "next/head"
 import "../styles/globals.css"
 import "../styles/main.css"
-import { Layout } from "antd"
 import Amplify from "aws-amplify"
 import Navbar from "../components/navbar"
 import AuthContext from "../context/auth"
@@ -27,11 +28,20 @@ Amplify.configure({
 
 function App({ Component, pageProps }) {
   const [currentUser, setCurrentUser] = useState({})
+  const router = useRouter()
+  const { hint, type } = router.query
+
   useEffect(() => {
-    console.log("get current user")
     getCurrentUser().then(setCurrentUser)
   }, [])
 
+  useEffect(() => {
+    if (hint) {
+      message[type](hint)
+    }
+  }, [hint, type, router.pathname])
+
+  const authContext = useMemo(() => ({ ...currentUser, setCurrentUser }), [currentUser])
   return (
     <>
       <Head>
@@ -39,7 +49,7 @@ function App({ Component, pageProps }) {
         <meta name="description" content="Compare products!" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <AuthContext.Provider value={currentUser}>
+      <AuthContext.Provider value={authContext}>
         <Layout>
           <Navbar />
           <Content style={{ padding: "0 50px", marginTop: 64, height: "100%" }}>

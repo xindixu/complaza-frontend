@@ -14,9 +14,9 @@ const Wrapper = styled.div`
   justify-content: center;
 `
 
-function ResultsLoader() {
+function ResultsLoader({ wrap }) {
   return (
-    <Row gutter={16} wrap={false}>
+    <Row gutter={16} wrap={wrap}>
       {[...new Array(20).keys()].map((_, index) => {
         return (
           // eslint-disable-next-line react/no-array-index-key

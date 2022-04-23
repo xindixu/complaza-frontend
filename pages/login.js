@@ -1,22 +1,42 @@
-import React, { useEffect } from "react"
+import React, { useContext, useEffect } from "react"
 import { useRouter } from "next/router"
-import { message } from "antd"
 import Session from "../components/session"
 import { LOGIN } from "../components/session/form"
+import AuthContext from "../context/auth"
+import { getCurrentUser } from "../lib/auth"
 
 function LogIn() {
   const router = useRouter()
-
-  const showHint = router.query.hint
+  const { setCurrentUser, isLoggedIn, userLoaded } = useContext(AuthContext)
 
   useEffect(() => {
-    if (showHint) {
-      message.warning("Please log in first")
+    if (isLoggedIn) {
+      router.push(
+        {
+          pathname: "/",
+          query: {
+            hint: "You've already logged in",
+            type: "warning",
+          },
+        },
+        "/"
+      )
     }
-  }, [showHint])
+  }, [])
 
-  const onSuccess = () => {
-    router.push("/")
+  const onSuccess = async () => {
+    await getCurrentUser().then(setCurrentUser)
+
+    router.push(
+      {
+        pathname: "/",
+        query: {
+          hint: "Welcome back",
+          type: "success",
+        },
+      },
+      "/"
+    )
   }
 
   return <Session type={LOGIN} onSuccess={onSuccess} />

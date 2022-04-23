@@ -19,12 +19,11 @@ const BUTTON_TEXT = {
 function SessionForm({ type, onSubmit, initialValues }) {
   const [form] = Form.useForm()
   const onFinish = (values) => {
-    console.log("Success:", values)
     onSubmit(values)
   }
 
   const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo)
+    console.error("Failed:", errorInfo)
   }
 
   useEffect(() => form.resetFields(), [form, initialValues])

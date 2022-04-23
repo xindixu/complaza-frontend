@@ -11,13 +11,22 @@ const { Title } = Typography
 
 function Wishlist() {
   const [items, setItems] = useState([])
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
   const { userId, token, isLoggedIn, userLoaded } = useContext(AuthContext)
   const router = useRouter()
 
   useEffect(() => {
     if (!isLoggedIn && userLoaded) {
-      router.push("/login?hint=true")
+      router.push(
+        {
+          pathname: "/login",
+          query: {
+            hint: "Please log in first",
+            type: "warning",
+          },
+        },
+        "/login"
+      )
     }
   }, [router, isLoggedIn, userLoaded])
 
@@ -96,7 +105,7 @@ function Wishlist() {
     <div>
       <Title>Wishlist</Title>
       {isLoading ? (
-        <Loader />
+        <Loader wrap />
       ) : items.length ? (
         <Row gutter={16}>
           {items?.map((item, index) => {
