@@ -6,29 +6,15 @@ import AuthContext from "../context/auth"
 import Card from "../components/product/card"
 import Loader from "../components/product/loader"
 import { deleteWishlist, postWishlist } from "../lib/wishlist"
+import withProtectedRoute from "../components/protected-route"
 
 const { Title } = Typography
 
 function Wishlist() {
+  const router = useRouter()
   const [items, setItems] = useState([])
   const [isLoading, setIsLoading] = useState(true)
-  const { userId, token, isLoggedIn, userLoaded } = useContext(AuthContext)
-  const router = useRouter()
-
-  useEffect(() => {
-    if (!isLoggedIn && userLoaded) {
-      router.push(
-        {
-          pathname: "/login",
-          query: {
-            hint: "Please log in first",
-            type: "warning",
-          },
-        },
-        "/login"
-      )
-    }
-  }, [router, isLoggedIn, userLoaded])
+  const { userId, token } = useContext(AuthContext)
 
   useEffect(() => {
     setIsLoading(true)
@@ -53,7 +39,7 @@ function Wishlist() {
   const addToWishlist = useCallback(
     (item) => {
       if (!token) {
-        // TODO: show please log in pop up
+        // This shouldn't happen
         console.log("please log in")
         return
       }
@@ -66,7 +52,6 @@ function Wishlist() {
         if (res.statusCode !== 200) {
           console.error("error")
         }
-        console.log(res)
       })
     },
     [token, userId]
@@ -75,7 +60,7 @@ function Wishlist() {
   const removeFromWishlist = useCallback(
     (item, index) => {
       if (!token) {
-        // TODO: show please log in pop up
+        // This shouldn't happen
         message.error("Please log in")
         return
       }
@@ -141,4 +126,4 @@ function Wishlist() {
   )
 }
 
-export default Wishlist
+export default withProtectedRoute(Wishlist)
