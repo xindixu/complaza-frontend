@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback, useContext } from "react"
 import { useRouter } from "next/router"
 import { Row, Col, Image, Typography, message } from "antd"
 import { API, Storage } from "aws-amplify"
+import qs from "qs"
 import ExpandableRow from "../components/product/expandable-row"
 import AuthContext from "../context/auth"
 import { deleteWishlist, postWishlist } from "../lib/wishlist"
@@ -31,9 +32,13 @@ function Result() {
       return
     }
 
-    const link = userId
-      ? `/search?q=${q}&sort_by=price&uid=${userId}`
-      : `/search?q=${q}&sort_by=price`
+    const params = {
+      q,
+      sort_by: "price",
+      uid: userId,
+      img: image,
+    }
+    const link = `/search?${qs.stringify(params)}`
 
     API.get("default", link).then((res) => {
       if (res.statusCode !== 200) {
@@ -44,7 +49,7 @@ function Result() {
       setItemsByRetailer(res.body.items)
       setIsSearching(false)
     })
-  }, [q, userId])
+  }, [image, q, userId])
 
   useEffect(() => {
     if (!image) {
