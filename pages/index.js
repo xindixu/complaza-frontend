@@ -57,22 +57,24 @@ function Home() {
     setIsSearching(true)
     const { type } = file
     const key = uuidv4()
+    const suffix = type.split("/")[1]
+    const fileName = `${key}.${suffix}`
 
     try {
       const resizedImage = await resizeImage(file)
 
-      await Storage.put(key, resizedImage, {
+      await Storage.put(fileName, resizedImage, {
         contentType: type,
       })
 
-      const res = await API.get("default", `/image/${key}`)
+      const res = await API.get("default", `/image/${fileName}`)
 
       if (res.statusCode !== 200) {
         throw res
       }
 
       const { title } = res.body
-      router.push(`/results?image=${key}&q=${title}`)
+      router.push(`/results?image=${fileName}&q=${title}`)
       setIsSearching(false)
     } catch (error) {
       console.error(error)
