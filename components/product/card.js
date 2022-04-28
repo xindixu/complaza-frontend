@@ -36,9 +36,23 @@ function ProductCard({
               </Col>
               <Col>
                 {starred ? (
-                  <Button icon={<StarFilled />} shape="circle" onClick={removeFromWishlist} />
+                  <Button
+                    icon={<StarFilled />}
+                    shape="circle"
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      removeFromWishlist()
+                    }}
+                  />
                 ) : (
-                  <Button icon={<StarOutlined />} shape="circle" onClick={addToWishlist} />
+                  <Button
+                    icon={<StarOutlined />}
+                    shape="circle"
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      addToWishlist()
+                    }}
+                  />
                 )}
               </Col>
             </Row>
