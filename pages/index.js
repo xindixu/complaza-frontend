@@ -5,34 +5,12 @@ import { Row, Col, Button, Input, Spin, Typography } from "antd"
 import { API, Storage } from "aws-amplify"
 import { v4 as uuidv4 } from "uuid"
 import Uploader from "../components/uploader"
-import ImageTools from "../lib/image-resizer"
 
 const { Text } = Typography
 
 const UploaderWrapper = styled.div`
   margin-top: 24px;
 `
-
-const MAX_SIZE = 512
-
-const resizeImage = (file) => {
-  return new Promise((resolve) => {
-    ImageTools.resize(
-      file,
-      {
-        width: MAX_SIZE,
-        height: MAX_SIZE,
-      },
-      async (blob) => {
-        const compressed = new File([blob], "temp", {
-          type: file.type,
-          lastModified: Date.now(),
-        })
-        resolve(compressed)
-      }
-    )
-  })
-}
 
 function Home() {
   const [textQuery, setTextQuery] = useState("")
@@ -61,9 +39,7 @@ function Home() {
     const fileName = `${key}.${suffix}`
 
     try {
-      const resizedImage = await resizeImage(file)
-
-      await Storage.put(fileName, resizedImage, {
+      await Storage.put(fileName, file, {
         contentType: type,
       })
 
