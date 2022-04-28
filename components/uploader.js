@@ -10,7 +10,7 @@ function Uploader({ onSearch }) {
     name: "file",
     multiple: false,
     // FIXME: add support for png
-    accept: "image/jpeg,image/jpg",
+    accept: "image/jpeg,image/jpg,image/png",
     listType: "picture-card",
     beforeUpload: () => false, // disable auto upload
   }
