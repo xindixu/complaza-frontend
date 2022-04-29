@@ -1,40 +1,56 @@
 import React, { useState, useEffect, useContext, useCallback } from "react"
 import { API } from "aws-amplify"
-import { Row, Col, Typography, Empty, message } from "antd"
+import { Row, Col, Typography, Button, Empty, Input, message } from "antd"
 import { useRouter } from "next/router"
+import qs from "qs"
 import AuthContext from "../context/auth"
 import Card from "../components/product/card"
 import Loader from "../components/product/loader"
 import { deleteWishlist, postWishlist } from "../lib/wishlist"
 import withProtectedRoute from "../components/protected-route"
 
-const { Title } = Typography
+const { Title, Text } = Typography
 
 function Wishlist() {
   const router = useRouter()
   const [items, setItems] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const { userId, token } = useContext(AuthContext)
+  const [isTextSearchError, setIsTextSearchError] = useState(false)
+  const [textQuery, setTextQuery] = useState("")
+
+  const queryFromWishlist = useCallback(
+    (query) => {
+      if (!userId || !token) {
+        return
+      }
+      setIsLoading(true)
+      const params = {
+        q: query,
+      }
+      const link = query
+        ? `/search/wishlist/${userId}?${qs.stringify(params)}`
+        : `/wishlist/${userId}`
+
+      API.get("default", link, {
+        headers: {
+          Authorization: token,
+        },
+      }).then((res) => {
+        if (res.statusCode !== 200) {
+          console.error("error")
+        }
+
+        setItems(res.body.items)
+        setIsLoading(false)
+      })
+    },
+    [token, userId]
+  )
 
   useEffect(() => {
-    setIsLoading(true)
-    if (!userId || !token) {
-      return
-    }
-
-    API.get("default", `/wishlist/${userId}`, {
-      headers: {
-        Authorization: token,
-      },
-    }).then((res) => {
-      if (res.statusCode !== 200) {
-        console.error("error")
-      }
-
-      setItems(res.body.items)
-      setIsLoading(false)
-    })
-  }, [token, userId])
+    queryFromWishlist()
+  }, [queryFromWishlist, token, userId])
 
   const addToWishlist = useCallback(
     (item) => {
@@ -82,6 +98,22 @@ function Wishlist() {
     [token, userId]
   )
 
+  const onTextSearch = useCallback(() => {
+    setIsTextSearchError(false)
+
+    if (textQuery === "") {
+      setIsTextSearchError(true)
+      return
+    }
+
+    queryFromWishlist(textQuery)
+  }, [queryFromWishlist, textQuery])
+
+  const onTextClear = useCallback(() => {
+    setTextQuery("")
+    queryFromWishlist("")
+  }, [queryFromWishlist])
+
   const onClickProduct = (id) => {
     router.push(`/products/${id}`)
   }
@@ -89,6 +121,30 @@ function Wishlist() {
   return (
     <div>
       <Title>Wishlist</Title>
+
+      <Row gutter={16} className="tw-mb-5">
+        <Col flex="auto">
+          <Input
+            status={isTextSearchError ? "error" : ""}
+            placeholder="Search by text"
+            value={textQuery}
+            onChange={(e) => setTextQuery(e.target.value)}
+            onPressEnter={onTextSearch}
+          />
+          {isTextSearchError && <Text type="danger">Please enter some text</Text>}
+        </Col>
+        <Col flex="64px">
+          <Button type="primary" onClick={onTextSearch}>
+            Search
+          </Button>
+        </Col>
+        <Col flex="64px">
+          <Button type="default" onClick={onTextClear} disabled={textQuery === ""}>
+            Clear
+          </Button>
+        </Col>
+      </Row>
+
       {isLoading ? (
         <Loader wrap />
       ) : items.length ? (

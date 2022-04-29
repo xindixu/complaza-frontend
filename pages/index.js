@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useCallback } from "react"
 import { useRouter } from "next/router"
 import styled from "styled-components"
 import { Row, Col, Button, Input, Spin, Typography } from "antd"
@@ -20,7 +20,7 @@ function Home() {
 
   const router = useRouter()
 
-  const onTextSearch = () => {
+  const onTextSearch = useCallback(() => {
     setIsTextSearchError(false)
 
     if (textQuery === "") {
@@ -29,34 +29,37 @@ function Home() {
     }
 
     router.push(`/results?q=${textQuery}`)
-  }
+  }, [router, textQuery])
 
-  const onImageSearch = async (file) => {
-    setIsSearching(true)
-    const { type } = file
-    const key = uuidv4()
-    const suffix = type.split("/")[1]
-    const fileName = `${key}.${suffix}`
+  const onImageSearch = useCallback(
+    async (file) => {
+      setIsSearching(true)
+      const { type } = file
+      const key = uuidv4()
+      const suffix = type.split("/")[1]
+      const fileName = `${key}.${suffix}`
 
-    try {
-      await Storage.put(fileName, file, {
-        contentType: type,
-      })
+      try {
+        await Storage.put(fileName, file, {
+          contentType: type,
+        })
 
-      const res = await API.get("default", `/image/${fileName}`)
+        const res = await API.get("default", `/image/${fileName}`)
 
-      if (res.statusCode !== 200) {
-        throw res
+        if (res.statusCode !== 200) {
+          throw res
+        }
+
+        const { title } = res.body
+        router.push(`/results?image=${fileName}&q=${title}`)
+        setIsSearching(false)
+      } catch (error) {
+        console.error(error)
+        setIsSearching(false)
       }
-
-      const { title } = res.body
-      router.push(`/results?image=${fileName}&q=${title}`)
-      setIsSearching(false)
-    } catch (error) {
-      console.error(error)
-      setIsSearching(false)
-    }
-  }
+    },
+    [router]
+  )
 
   const content = (
     <div>
