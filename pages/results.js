@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useCallback, useContext } from "react"
+import React, { useEffect, useMemo, useState, useCallback, useContext } from "react"
 import { useRouter } from "next/router"
-import { Row, Col, Image, Typography, message } from "antd"
+import { Row, Col, Image, Typography, message, Radio } from "antd"
 import { API, Storage } from "aws-amplify"
 import qs from "qs"
 import ExpandableRow from "../components/product/expandable-row"
@@ -16,8 +16,25 @@ const RETAILERS = [
   { name: "Shopee", url: "https://shopee.com" },
 ]
 
+const SORTBY_PRICE = "Price"
+const SORTBY_RELEVANCE = "Relevance"
+const SORTBY_OPTIONS = [
+  { label: SORTBY_PRICE, value: SORTBY_PRICE },
+  { label: SORTBY_RELEVANCE, value: SORTBY_RELEVANCE },
+]
+
+const sortItemsByPrice = (itemsByRetailer) => {
+  const sortedByPrice = {}
+  Object.keys(itemsByRetailer).forEach((retailer) => {
+    sortedByPrice[retailer] = [...itemsByRetailer[retailer]].sort((a, b) => a.price - b.price)
+  })
+
+  return sortedByPrice
+}
+
 function Result() {
   const [itemsByRetailer, setItemsByRetailer] = useState({})
+  const [sortBy, setSortBy] = useState(SORTBY_RELEVANCE)
   const [isSearching, setIsSearching] = useState(true)
   const [imageLink, setImageLink] = useState("")
   const { userId, token } = useContext(AuthContext)
@@ -60,7 +77,7 @@ function Result() {
   }, [image])
 
   const addToWishlist = useCallback(
-    (item, index) => {
+    (item) => {
       if (!token) {
         message.error("Please log in")
         return
@@ -77,14 +94,20 @@ function Result() {
         }
 
         const { retailer } = item
-        setItemsByRetailer((prevRetailers) => ({
-          ...prevRetailers,
-          [item.retailer]: [
-            ...prevRetailers[retailer].slice(0, index),
-            { ...item, starred: true },
-            ...prevRetailers[retailer].slice(index + 1),
-          ],
-        }))
+
+        setItemsByRetailer((prevRetailers) => {
+          const items = prevRetailers[retailer]
+          const index = items.findIndex((i) => i.id === item.id)
+
+          return {
+            ...prevRetailers,
+            [item.retailer]: [
+              ...items.slice(0, index),
+              { ...item, starred: true },
+              ...items.slice(index + 1),
+            ],
+          }
+        })
         message.success("Added to your wishlist")
       })
     },
@@ -92,7 +115,7 @@ function Result() {
   )
 
   const removeFromWishlist = useCallback(
-    (item, index) => {
+    (item) => {
       if (!token) {
         message.error("Please log in")
         return
@@ -109,18 +132,28 @@ function Result() {
         }
 
         const { retailer } = item
-        setItemsByRetailer((prevRetailers) => ({
-          ...prevRetailers,
-          [item.retailer]: [
-            ...prevRetailers[retailer].slice(0, index),
-            { ...item, starred: false },
-            ...prevRetailers[retailer].slice(index + 1),
-          ],
-        }))
+        setItemsByRetailer((prevRetailers) => {
+          const items = prevRetailers[retailer]
+          const index = items.findIndex((i) => i.id === item.id)
+
+          return {
+            ...prevRetailers,
+            [item.retailer]: [
+              ...items.slice(0, index),
+              { ...item, starred: false },
+              ...items.slice(index + 1),
+            ],
+          }
+        })
         message.success("Removed from your wishlist")
       })
     },
     [token, userId]
+  )
+
+  const itemsToDisplay = useMemo(
+    () => (sortBy === SORTBY_PRICE ? sortItemsByPrice(itemsByRetailer) : itemsByRetailer),
+    [itemsByRetailer, sortBy]
   )
 
   return (
@@ -133,6 +166,15 @@ function Result() {
           </p>
 
           {imageLink && <Image src={imageLink} alt="image uploaded for search" />}
+
+          <p>Sort by</p>
+          <Radio.Group
+            options={SORTBY_OPTIONS}
+            onChange={(e) => setSortBy(e.target.value)}
+            value={sortBy}
+            optionType="button"
+            buttonStyle="solid"
+          />
         </Col>
         <Col flex="auto">
           {RETAILERS.map(({ name }) => (
@@ -140,7 +182,7 @@ function Result() {
               key={name}
               isSearching={isSearching}
               retailerName={name}
-              items={itemsByRetailer[name]}
+              items={itemsToDisplay[name]}
               addToWishlist={addToWishlist}
               removeFromWishlist={removeFromWishlist}
             />

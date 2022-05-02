@@ -22,7 +22,7 @@ function ExpandableRow({ retailerName, items, addToWishlist, removeFromWishlist,
         <Empty />
       ) : (
         <Row gutter={16} wrap={isExpanded}>
-          {items?.map((item, index) => {
+          {items?.map((item) => {
             const { id, name, image, price, starred, link } = item
             return (
               <Col key={id} className="tw-mb-5">
@@ -33,8 +33,8 @@ function ExpandableRow({ retailerName, items, addToWishlist, removeFromWishlist,
                   price={price}
                   retailerName={retailerName}
                   starred={starred}
-                  addToWishlist={() => addToWishlist(item, index)}
-                  removeFromWishlist={() => removeFromWishlist(item, index)}
+                  addToWishlist={() => addToWishlist(item)}
+                  removeFromWishlist={() => removeFromWishlist(item)}
                 />
               </Col>
             )

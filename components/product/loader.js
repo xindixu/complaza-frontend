@@ -14,7 +14,7 @@ const Wrapper = styled.div`
   justify-content: center;
 `
 
-function ResultsLoader({ wrap }) {
+function ResultsLoader({ wrap = false }) {
   return (
     <Row gutter={16} wrap={wrap}>
       {[...new Array(20).keys()].map((_, index) => {

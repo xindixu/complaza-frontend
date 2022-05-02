@@ -20,7 +20,7 @@ function ProductCard({
     <Card
       style={{ width: 240 }}
       hoverable
-      cover={<img alt={name} src={image} width={240} height="auto" />}
+      cover={<img alt={name} src={image} width={240} height="auto" style={{ maxHeight: 300 }} />}
       onClick={onClick}
     >
       <Meta
