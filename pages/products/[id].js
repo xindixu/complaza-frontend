@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react"
 import { useRouter } from "next/router"
 import { API } from "aws-amplify"
+import { Col, Row } from "antd"
 import Detail from "../../components/product/detail"
 import PriceHistory from "../../components/price-history"
 
@@ -13,6 +14,7 @@ function ProductDetails() {
 
   useEffect(() => {
     setIsLoading(true)
+
     API.get("default", `/product/${id}`).then((res) => {
       const { statusCode, body } = res
 
@@ -38,7 +40,11 @@ function ProductDetails() {
   return (
     <>
       <Detail image={image} link={link} name={name} price={price} retailer={retailer} />
-      <PriceHistory prices={priceHistory} />
+      <Row>
+        <Col flex="auto">
+          <PriceHistory prices={priceHistory} />
+        </Col>
+      </Row>
     </>
   )
 }
