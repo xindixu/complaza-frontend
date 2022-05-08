@@ -1,5 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
-/* eslint-disable jsx-a11y/img-redundant-alt */
 import React, { useState, useEffect, useContext, useCallback } from "react"
 import { API, Storage } from "aws-amplify"
 import qs from "qs"
@@ -7,13 +5,10 @@ import { Typography, List } from "antd"
 import NextLink from "next/link"
 import AuthContext from "../context/auth"
 import withProtectedRoute from "../components/protected-route"
+import HistoryList from "../components/history/list"
+import Loader from "../components/history/loader"
 
 const { Title } = Typography
-
-const getDateTimeString = (datetime) => {
-  const d = new Date(datetime)
-  return `${d.toLocaleDateString()} ${d.toLocaleTimeString()}`
-}
 
 const parseImageUrls = (imageUrls) =>
   imageUrls.reduce((memo, { url, image }) => {
@@ -50,15 +45,14 @@ function History() {
         return
       }
 
-      const { items } = res.body
-      setItems(items)
+      const { items: resultItems } = res.body
 
       const imageUrls = await Promise.all(
-        items.map(({ image }) => Storage.get(image).then((url) => ({ url, image })))
+        resultItems.map(({ image }) => Storage.get(image).then((url) => ({ url, image })))
       )
 
+      setItems(resultItems)
       setImageUrlByKey(parseImageUrls(imageUrls))
-      setItems(items)
       setIsLoading(false)
     },
     [token, userId]
@@ -71,35 +65,7 @@ function History() {
   return (
     <div>
       <Title>History</Title>
-      <List
-        dataSource={items}
-        renderItem={({ q, date, image }) => (
-          <List.Item
-            key={`${q}-${date}`}
-            extra={
-              image ? (
-                <img
-                  width={200}
-                  alt={`uploaded image for keyword ${q}`}
-                  src={imageUrlByKey[image]}
-                />
-              ) : null
-            }
-          >
-            <List.Item.Meta
-              title={
-                <NextLink
-                  href={image ? `/results?image=${image}&q=${q}` : `/results?q=${q}`}
-                  passHref
-                >
-                  {q}
-                </NextLink>
-              }
-              description={getDateTimeString(date)}
-            />
-          </List.Item>
-        )}
-      />
+      {isLoading ? <Loader /> : <HistoryList items={items} imageUrlByKey={imageUrlByKey} />}
     </div>
   )
 }
