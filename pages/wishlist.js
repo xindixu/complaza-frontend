@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext, useCallback } from "react"
 import { API } from "aws-amplify"
-import { Row, Col, Typography, Button, Empty, Input, message } from "antd"
+import { Row, Col, Typography, Empty, message } from "antd"
 import { useRouter } from "next/router"
 import qs from "qs"
 import AuthContext from "../context/auth"
@@ -8,29 +8,28 @@ import Card from "../components/product/card"
 import Loader from "../components/product/loader"
 import { deleteWishlist, postWishlist } from "../lib/wishlist"
 import withProtectedRoute from "../components/protected-route"
+import SearchBar from "../components/search-bar"
 
-const { Title, Text } = Typography
+const { Title } = Typography
 
 function Wishlist() {
   const router = useRouter()
   const [items, setItems] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const { userId, token } = useContext(AuthContext)
-  const [isTextSearchError, setIsTextSearchError] = useState(false)
-  const [textQuery, setTextQuery] = useState("")
+  const [isError, setIsError] = useState(false)
+  const [query, setQuery] = useState("")
 
   const queryFromWishlist = useCallback(
-    (query) => {
+    (q) => {
       if (!userId || !token) {
         return
       }
       setIsLoading(true)
       const params = {
-        q: query,
+        q,
       }
-      const link = query
-        ? `/search/wishlist/${userId}?${qs.stringify(params)}`
-        : `/wishlist/${userId}`
+      const link = q ? `/search/wishlist/${userId}?${qs.stringify(params)}` : `/wishlist/${userId}`
 
       API.get("default", link, {
         headers: {
@@ -98,19 +97,19 @@ function Wishlist() {
     [token, userId]
   )
 
-  const onTextSearch = useCallback(() => {
-    setIsTextSearchError(false)
+  const onSearch = useCallback(() => {
+    setIsError(false)
 
-    if (textQuery === "") {
-      setIsTextSearchError(true)
+    if (query === "") {
+      setIsError(true)
       return
     }
 
-    queryFromWishlist(textQuery)
-  }, [queryFromWishlist, textQuery])
+    queryFromWishlist(query)
+  }, [queryFromWishlist, query])
 
-  const onTextClear = useCallback(() => {
-    setTextQuery("")
+  const onClear = useCallback(() => {
+    setQuery("")
     queryFromWishlist("")
   }, [queryFromWishlist])
 
@@ -122,28 +121,13 @@ function Wishlist() {
     <div>
       <Title>Wishlist</Title>
 
-      <Row gutter={16} className="tw-mb-5">
-        <Col flex="auto">
-          <Input
-            status={isTextSearchError ? "error" : ""}
-            placeholder="Search by text"
-            value={textQuery}
-            onChange={(e) => setTextQuery(e.target.value)}
-            onPressEnter={onTextSearch}
-          />
-          {isTextSearchError && <Text type="danger">Please enter some text</Text>}
-        </Col>
-        <Col flex="64px">
-          <Button type="primary" onClick={onTextSearch}>
-            Search
-          </Button>
-        </Col>
-        <Col flex="64px">
-          <Button type="default" onClick={onTextClear} disabled={textQuery === ""}>
-            Clear
-          </Button>
-        </Col>
-      </Row>
+      <SearchBar
+        isError={isError}
+        query={query}
+        setQuery={setQuery}
+        onSearch={onSearch}
+        onClear={onClear}
+      />
 
       {isLoading ? (
         <Loader wrap />
