@@ -3,6 +3,7 @@ import { useRouter } from "next/router"
 import { API } from "aws-amplify"
 import { Col, Row } from "antd"
 import Detail from "../../components/product/detail"
+import Loader from "../../components/product/detail-loader"
 import PriceHistory from "../../components/price-history"
 
 function ProductDetails() {
@@ -33,7 +34,7 @@ function ProductDetails() {
   }, [id])
 
   if (isLoading || !product || !priceHistory) {
-    return "loading"
+    return <Loader />
   }
 
   const { image, link, name, price, retailer } = product
