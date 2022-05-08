@@ -5,12 +5,8 @@ import React from "react"
 import PropTypes from "prop-types"
 import NextLink from "next/link"
 
-import { Typography, List } from "antd"
-
-const getDateTimeString = (datetime) => {
-  const d = new Date(datetime)
-  return `${d.toLocaleDateString()} ${d.toLocaleTimeString()}`
-}
+import { List } from "antd"
+import { getDateTimeString } from "../../lib/datetime"
 
 function HistoryList({ items, imageUrlByKey }) {
   return (
@@ -42,6 +38,15 @@ function HistoryList({ items, imageUrlByKey }) {
   )
 }
 
-HistoryList.propTypes = {}
+HistoryList.propTypes = {
+  items: PropTypes.arrayOf(
+    PropTypes.shape({
+      q: PropTypes.string.isRequired,
+      date: PropTypes.string.isRequired,
+      image: PropTypes.string,
+    }).isRequired
+  ).isRequired,
+  imageUrlByKey: PropTypes.object.isRequired,
+}
 
 export default HistoryList
