@@ -25,10 +25,15 @@ const options = {
 
 const BLUE = "#1890ff"
 
+const getDateString = (date) => {
+  const d = new Date(date)
+  return d.toLocaleDateString()
+}
+
 const parseData = (pricesByDate) => {
   const keys = Object.keys(pricesByDate)
   const data = keys.map((date) => pricesByDate[date])
-  const labels = keys
+  const labels = keys.map((date) => getDateString(date))
   // TODO: date formatting
   // const labels = keys.map((key) => format(new Date(key), MONTH_DAY_FORMAT))
 
