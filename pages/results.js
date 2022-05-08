@@ -164,9 +164,9 @@ function Result() {
           <p>
             <strong>&ldquo;{q}&rdquo;</strong>
           </p>
-
-          {imageLink && <Image src={imageLink} alt="image uploaded for search" />}
-
+          {imageLink && (
+            <Image src={imageLink} alt="image uploaded for search" className="tw-mb-5" />
+          )}
           <p>Sort by</p>
           <Radio.Group
             options={SORTBY_OPTIONS}

@@ -39,9 +39,6 @@ const openNotification = (title, msg) => {
     message: title,
     description: msg,
     duration: 0,
-    onClick: () => {
-      console.log("Notification Clicked!")
-    },
     key: KEY,
   })
 }
