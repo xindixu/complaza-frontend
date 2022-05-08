@@ -23,6 +23,7 @@ const UserWrapper = styled(Menu.Item)`
 const ROUTES = {
   "/": { text: "Search", key: 1 },
   "/wishlist": { text: "Wishlist", key: 2 },
+  "/history": { text: "History", key: 3 },
 }
 
 function Navbar() {
