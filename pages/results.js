@@ -10,10 +10,10 @@ import { deleteWishlist, postWishlist } from "../lib/wishlist"
 const { Title } = Typography
 
 const RETAILERS = [
-  { name: "Amazon", url: "https://amazon.com" },
+  // { name: "Amazon", url: "https://amazon.com" },
   { name: "Ebay", url: "https://ebay.com" },
-  { name: "Alibaba", url: "https://alibaba.com" },
   { name: "Shopee", url: "https://shopee.com" },
+  { name: "Alibaba", url: "https://alibaba.com" },
 ]
 
 const SORTBY_PRICE = "Price"
