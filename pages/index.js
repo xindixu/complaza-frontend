@@ -5,6 +5,7 @@ import { Row, Col, Button, Input, Spin, Typography } from "antd"
 import { API, Storage } from "aws-amplify"
 import { v4 as uuidv4 } from "uuid"
 import Uploader from "../components/uploader"
+import SearchBar from "../components/search-bar"
 
 const { Text } = Typography
 
@@ -30,6 +31,11 @@ function Home() {
 
     router.push(`/results?q=${textQuery}`)
   }, [router, textQuery])
+
+  const onTextClear = useCallback(() => {
+    setIsTextSearchError(false)
+    setTextQuery("")
+  }, [])
 
   const onImageSearch = useCallback(
     async (file) => {
@@ -63,23 +69,13 @@ function Home() {
 
   const content = (
     <div>
-      <Row gutter={16}>
-        <Col flex="auto">
-          <Input
-            status={isTextSearchError ? "error" : ""}
-            placeholder="Search by text"
-            value={textQuery}
-            onChange={(e) => setTextQuery(e.target.value)}
-            onPressEnter={onTextSearch}
-          />
-          {isTextSearchError && <Text type="danger">Please enter some text</Text>}
-        </Col>
-        <Col flex="64px">
-          <Button type="primary" onClick={onTextSearch}>
-            Search
-          </Button>
-        </Col>
-      </Row>
+      <SearchBar
+        isError={isTextSearchError}
+        query={textQuery}
+        setQuery={setTextQuery}
+        onSearch={onTextSearch}
+        onClear={onTextClear}
+      />
       <UploaderWrapper>
         <Uploader onSearch={onImageSearch} />
         {isImageSearchError && <Text type="danger">Please upload a picture</Text>}

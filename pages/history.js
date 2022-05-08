@@ -6,6 +6,7 @@ import AuthContext from "../context/auth"
 import withProtectedRoute from "../components/protected-route"
 import HistoryList from "../components/history/list"
 import Loader from "../components/history/loader"
+import SearchBar from "../components/search-bar"
 
 const { Title } = Typography
 
@@ -20,19 +21,19 @@ function History() {
   const [imageUrlByKey, setImageUrlByKey] = useState({})
   const [isLoading, setIsLoading] = useState(true)
   const { userId, token } = useContext(AuthContext)
+  const [isError, setIsError] = useState(false)
+  const [query, setQuery] = useState("")
 
   const queryFromHistory = useCallback(
-    async (query) => {
+    async (q) => {
       if (!userId || !token) {
         return
       }
       setIsLoading(true)
       const params = {
-        q: query,
+        q,
       }
-      const link = query
-        ? `/search/history/${userId}?${qs.stringify(params)}`
-        : `/history/${userId}`
+      const link = q ? `/search/history/${userId}?${qs.stringify(params)}` : `/history/${userId}`
 
       const res = await API.get("default", link, {
         headers: {
@@ -61,9 +62,32 @@ function History() {
     queryFromHistory()
   }, [queryFromHistory, token, userId])
 
+  const onSearch = useCallback(() => {
+    setIsError(false)
+
+    if (query === "") {
+      setIsError(true)
+      return
+    }
+
+    queryFromHistory(query)
+  }, [queryFromHistory, query])
+
+  const onClear = useCallback(() => {
+    setQuery("")
+    queryFromHistory("")
+  }, [queryFromHistory])
+
   return (
     <div>
       <Title>History</Title>
+      <SearchBar
+        isError={isError}
+        query={query}
+        setQuery={setQuery}
+        onSearch={onSearch}
+        onClear={onClear}
+      />
       {isLoading ? <Loader /> : <HistoryList items={items} imageUrlByKey={imageUrlByKey} />}
     </div>
   )
