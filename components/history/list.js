@@ -3,7 +3,7 @@
 
 import React from "react"
 import PropTypes from "prop-types"
-import NextLink from "next/link"
+import Link from "next/link"
 
 import { List } from "antd"
 import { getDateTimeString } from "../../lib/datetime"
@@ -12,23 +12,27 @@ function HistoryList({ items, imageUrlByKey }) {
   return (
     <List
       dataSource={items}
-      renderItem={({ q, date, image }) => (
+      renderItem={({ title, date, image }) => (
         <List.Item
-          key={`${q}-${date}`}
+          key={`${title}-${date}`}
           extra={
             image ? (
-              <img width={200} alt={`uploaded image for keyword ${q}`} src={imageUrlByKey[image]} />
+              <img
+                width={200}
+                alt={`uploaded image for keyword ${title}`}
+                src={imageUrlByKey[image]}
+              />
             ) : null
           }
         >
           <List.Item.Meta
             title={
-              <NextLink
-                href={image ? `/results?image=${image}&q=${q}` : `/results?q=${q}`}
+              <Link
+                href={image ? `/results?image=${image}&q=${title}` : `/results?q=${title}`}
                 passHref
               >
-                {q}
-              </NextLink>
+                {title}
+              </Link>
             }
             description={getDateTimeString(date)}
           />
@@ -41,7 +45,7 @@ function HistoryList({ items, imageUrlByKey }) {
 HistoryList.propTypes = {
   items: PropTypes.arrayOf(
     PropTypes.shape({
-      q: PropTypes.string.isRequired,
+      title: PropTypes.string.isRequired,
       date: PropTypes.string.isRequired,
       image: PropTypes.string,
     }).isRequired
