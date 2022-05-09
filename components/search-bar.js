@@ -1,6 +1,7 @@
 import React from "react"
 import PropTypes from "prop-types"
 import { Row, Col, Typography, Button, Input } from "antd"
+import Dictaphone from "./dictaphone"
 
 const { Text } = Typography
 
@@ -16,6 +17,9 @@ function SearchBar({ isError, query, setQuery, onSearch, onClear }) {
           onPressEnter={onSearch}
         />
         {isError && <Text type="danger">Please enter some text</Text>}
+      </Col>
+      <Col flex="24px">
+        <Dictaphone setQuery={setQuery} />
       </Col>
       <Col flex="64px">
         <Button type="primary" onClick={onSearch}>
