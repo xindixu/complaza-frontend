@@ -168,9 +168,13 @@ function Result() {
             <strong>&ldquo;{q}&rdquo;</strong>
           </p>
           {imageLink && (
-            <Image src={imageLink} alt="image uploaded for search" className="tw-mb-5" />
+            <Image
+              src={imageLink}
+              alt="image uploaded for search"
+              height={screens.sm ? "auto" : 200}
+            />
           )}
-          <p>Sort by</p>
+          <p className="tw-mt-5">Sort by</p>
           <Radio.Group
             options={SORTBY_OPTIONS}
             onChange={(e) => setSortBy(e.target.value)}

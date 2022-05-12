@@ -1,7 +1,9 @@
 import React from "react"
 import styled from "styled-components"
-import { List, Skeleton, Spin } from "antd"
+import { List, Skeleton, Spin, Grid } from "antd"
 import { LoadingOutlined } from "@ant-design/icons"
+
+const { useBreakpoint } = Grid
 
 const Wrapper = styled.div`
   width: 200px;
@@ -18,6 +20,8 @@ const ITEM = {
 }
 
 function Loader() {
+  const screens = useBreakpoint()
+
   return (
     <List
       dataSource={[...new Array(20).keys()].map(() => ({ ...ITEM, image: Math.random() > 0.7 }))}
@@ -25,7 +29,7 @@ function Loader() {
         <List.Item
           key={index}
           extra={
-            image ? (
+            image && screens.sm ? (
               <Wrapper>
                 <Spin
                   size="large"
@@ -41,8 +45,12 @@ function Loader() {
           }
         >
           <List.Item.Meta
-            title={<Skeleton.Input active size="medium" />}
-            description={<Skeleton.Input active size="small" />}
+            title={
+              <Skeleton title={{ width: Math.random() * 200 + 200 }} paragraph={false} active />
+            }
+            description={
+              <Skeleton title={{ width: Math.random() * 200 + 200 }} paragraph={false} active />
+            }
           />
         </List.Item>
       )}

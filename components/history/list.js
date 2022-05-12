@@ -5,10 +5,13 @@ import React from "react"
 import PropTypes from "prop-types"
 import Link from "next/link"
 
-import { List } from "antd"
+import { List, Grid } from "antd"
 import { getDateTimeString } from "../../lib/datetime"
 
+const { useBreakpoint } = Grid
+
 function HistoryList({ items, imageUrlByKey }) {
+  const screens = useBreakpoint()
   return (
     <List
       dataSource={items}
@@ -16,7 +19,7 @@ function HistoryList({ items, imageUrlByKey }) {
         <List.Item
           key={`${title}-${date}`}
           extra={
-            image ? (
+            image && screens.sm ? (
               <img
                 width={200}
                 alt={`uploaded image for keyword ${title}`}
