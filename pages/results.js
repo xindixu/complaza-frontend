@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState, useCallback, useContext } from "react"
 import { useRouter } from "next/router"
-import { Row, Col, Image, Typography, message, Radio } from "antd"
+import { Row, Col, Grid, Image, Typography, message, Radio } from "antd"
 import { API, Storage } from "aws-amplify"
 import qs from "qs"
 import ExpandableRow from "../components/product/expandable-row"
@@ -8,6 +8,7 @@ import AuthContext from "../context/auth"
 import { deleteWishlist, postWishlist } from "../lib/wishlist"
 
 const { Title } = Typography
+const { useBreakpoint } = Grid
 
 const RETAILERS = [
   // { name: "Amazon", url: "https://amazon.com" },
@@ -33,6 +34,8 @@ const sortItemsByPrice = (itemsByRetailer) => {
 }
 
 function Result() {
+  const screens = useBreakpoint()
+
   const [itemsByRetailer, setItemsByRetailer] = useState({})
   const [sortBy, setSortBy] = useState(SORTBY_RELEVANCE)
   const [isSearching, setIsSearching] = useState(true)
@@ -158,8 +161,8 @@ function Result() {
 
   return (
     <div>
-      <Row wrap={false} gutter={32}>
-        <Col flex="300px">
+      <Row wrap={!screens.sm} gutter={32}>
+        <Col flex="300px" className="tw-mb-5">
           <Title level={3}>Results for...</Title>
           <p>
             <strong>&ldquo;{q}&rdquo;</strong>

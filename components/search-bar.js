@@ -1,14 +1,17 @@
 import React from "react"
 import PropTypes from "prop-types"
-import { Row, Col, Typography, Button, Input } from "antd"
+import { Row, Col, Grid, Typography, Button, Input } from "antd"
 import Dictaphone from "./dictaphone"
 
 const { Text } = Typography
+const { useBreakpoint } = Grid
 
 function SearchBar({ isError, query, setQuery, onSearch, onClear }) {
+  const screens = useBreakpoint()
+
   return (
     <Row gutter={16} className="tw-mb-5">
-      <Col flex="auto">
+      <Col flex={screens.xs ? "100%" : "auto"} className={screens.xs ? "tw-mb-5" : ""}>
         <Input
           status={isError ? "error" : ""}
           placeholder="Search by text"

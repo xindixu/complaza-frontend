@@ -10,6 +10,10 @@ const { Title } = Typography
 const Wrapper = styled.div`
   overflow: hidden;
 `
+
+const ProductWrapper = styled(Row)`
+  overflow-y: scroll;
+`
 function ExpandableRow({ retailerName, items, addToWishlist, removeFromWishlist, isSearching }) {
   const [isExpanded, setIsExpanded] = useState(false)
 
@@ -21,7 +25,7 @@ function ExpandableRow({ retailerName, items, addToWishlist, removeFromWishlist,
       ) : items.length === 0 ? (
         <Empty />
       ) : (
-        <Row gutter={16} wrap={isExpanded}>
+        <ProductWrapper gutter={16} wrap={isExpanded}>
           {items?.map((item) => {
             const { id, name, image, price, starred, link } = item
             return (
@@ -39,7 +43,7 @@ function ExpandableRow({ retailerName, items, addToWishlist, removeFromWishlist,
               </Col>
             )
           })}
-        </Row>
+        </ProductWrapper>
       )}
       <Row align="middle" justify="end">
         <Button

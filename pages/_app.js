@@ -52,10 +52,8 @@ function App({ Component, pageProps }) {
       <AuthContext.Provider value={authContext}>
         <Layout>
           <Navbar />
-          <Content style={{ padding: "0 50px", marginTop: 64, height: "100%" }}>
-            <div style={{ padding: 24, minHeight: 380 }}>
-              <Component {...pageProps} />
-            </div>
+          <Content className="tw-px-4 sm:tw-px-8 tw-mt-24 tw-h-full">
+            <Component {...pageProps} />
           </Content>
         </Layout>
       </AuthContext.Provider>
